@@ -190,7 +190,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #5157
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tab: 'bp', topic: 'all', view: 'days', day: 'Mon', query: '', saved: {} };
+    this.state = { tab: 'bp', topics: {}, view: 'days', day: 'Mon', query: '', saved: {} };
   }
   renderVals() {
     var self = this;
@@ -284,13 +284,15 @@ class Component extends DCLogic {
     var byQuery = all.filter(function (p) {
       return !q || (p.title + ' ' + p.authors + ' ' + p.session).toLowerCase().indexOf(q) >= 0;
     });
-    var shown = byQuery.filter(function (p) { return st.topic === 'all' || p.topic === st.topic; })
+    var tsel = st.topics || {};
+    var anyTopic = Object.keys(tsel).some(function (k) { return tsel[k]; });
+    var shown = byQuery.filter(function (p) { return !anyTopic || !!tsel[p.topic]; })
       .sort(function (a, b) { return a.sortKey - b.sortKey; });
 
     var topics = TOPICS.map(function (t) {
-      var on = st.topic === t[0];
+      var on = t[0] === 'all' ? !anyTopic : !!tsel[t[0]];
       var n = t[0] === 'all' ? byQuery.length : byQuery.filter(function (p) { return p.topic === t[0]; }).length;
-      return { label: t[1], count: n, pressed: on ? 'true' : 'false', bg: on ? '#5157D6' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3D4157', border: on ? '#5157D6' : '#DCDFEA', pick: function () { self.setState({ topic: t[0] }); } };
+      return { label: t[1], count: n, pressed: on ? 'true' : 'false', bg: on ? '#5157D6' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3D4157', border: on ? '#5157D6' : '#DCDFEA', pick: function () { if (t[0] === 'all') { self.setState({ topics: {} }); return; } var n = Object.assign({}, self.state.topics); n[t[0]] = !n[t[0]]; self.setState({ topics: n }); } };
     });
     function seg(id, cur, label, key) {
       var on = id === cur;
