@@ -64,26 +64,33 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #0000
 <h2 id="list-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Award Papers</h2>
 <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px">
 <div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px">
-<div role="tablist" aria-label="Award type" style="display: flex; gap: 4px; padding: 4px; background: #F2F2F2">
+<div role="tablist" aria-label="Award type" style="display: flex; background: #F2F2F2">
 <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
-<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="min-height: 44px; padding: 0 16px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{t.shadow}}">{{t.label}}</button>
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="flex: 1 1 auto; white-space: nowrap; min-height: 52px; padding: 0 20px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{t.shadow}}">{{t.label}}</button>
 </sc-for>
 </div>
-<label style="flex: 1 1 260px; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 2px; border: 0; border-bottom: 1px solid #000000; background: transparent">
+<label style="flex: 1 1 260px; display: flex; align-items: center; gap: 10px; min-height: 52px; box-sizing: border-box; padding: 0 14px; border: 1px solid #CCCCCC; background: #FFFFFF">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
 <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search award papers</span>
 <input type="search" placeholder="Search titles, authors, sessions" value="{{query}}" onChange="{{onQuery}}" style="flex: 1; min-width: 0; border: none; outline: none; font-size: 15px; color: #000000; background: transparent">
 </label>
-<div role="group" aria-label="View" style="display: flex; gap: 4px; padding: 4px; background: #F2F2F2">
+<div role="group" aria-label="View" style="display: flex; background: #F2F2F2">
 <sc-for list="{{views}}" as="v" hint-placeholder-count="2">
-<button type="button" aria-pressed="{{v.pressed}}" onClick="{{v.pick}}" style="min-height: 44px; padding: 0 16px; border: none; background: {{v.bg}}; color: {{v.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{v.shadow}}">{{v.label}}</button>
+<button type="button" aria-pressed="{{v.pressed}}" onClick="{{v.pick}}" style="flex: 1 1 auto; white-space: nowrap; min-height: 52px; padding: 0 20px; border: none; background: {{v.bg}}; color: {{v.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{v.shadow}}">{{v.label}}</button>
 </sc-for>
 </div>
 </div>
-<div role="group" aria-label="Filter by topic" style="display: flex; flex-wrap: wrap; gap: 8px">
-<sc-for list="{{topics}}" as="tp" hint-placeholder-count="11">
-<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 0; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 13px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 500; color: {{tp.countColor}}">{{tp.count}}</span></button>
+<div role="group" aria-label="Filter by topic" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{topicsA}}" as="tp" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 0; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 13px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 500; color: {{tp.countColor}}">{{tp.count}}</span></button>
 </sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{topicsB}}" as="tp" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 0; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 13px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 500; color: {{tp.countColor}}">{{tp.count}}</span></button>
+</sc-for>
+</div>
 </div>
 </div>
 
@@ -113,7 +120,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #0000
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0 32px">
 <sc-for list="{{s.items}}" as="p" hint-placeholder-count="3">
 <article id="{{p.anchor}}" style="border-top: 1px solid #000000; padding: 16px 0 32px; display: flex; flex-direction: column; gap: 8px; scroll-margin-top: 80px">
-<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9A9A">{{p.topicLabel}}</span>
 <h4 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h4>
 <sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
 <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #333333">{{p.sum}}</p>
@@ -141,7 +147,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #0000
 <span style="font-size: 13px; color: #9A9A9A">{{p.timeLabel}}</span>
 </div>
 <div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9A9A">{{p.topicLabel}}</span>
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h3>
 <sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
 <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #333333">{{p.sum}}</p>
@@ -253,7 +258,7 @@ class Component extends DCLogic {
     var isHM = st.tab === 'hm';
     var savedCount = all.filter(function (p) { return p.saved; }).length;
     return {
-      tabs: tabs, views: views, topics: topics, multi: multi,
+      tabs: tabs, views: views, topicsA: topics.slice(0, Math.ceil(topics.length / 2)), topicsB: topics.slice(Math.ceil(topics.length / 2)), multi: multi,
       papers: shown, dayTabs: dayTabs, slots: slots, dayEmpty: dayPapers.length === 0,
       isHM: isHM, showList: !isHM && st.view === 'list', showDays: !isHM && st.view === 'days',
       query: st.query,

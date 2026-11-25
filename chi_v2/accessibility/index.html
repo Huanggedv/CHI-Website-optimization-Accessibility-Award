@@ -74,13 +74,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 
 <section aria-labelledby="answers-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
 <h2 id="answers-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">FAQ by Need</h2>
-<div role="group" aria-label="Filter answers by need" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 16px">
+<div role="group" aria-label="Filter answers by need" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px">
 <sc-for list="{{filters}}" as="f" hint-placeholder-count="10">
 <button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 48px; padding: 0 12px; border: 0; background: {{f.bg}}; color: {{f.fg}}; font-size: 15px; font-weight: 500; cursor: pointer">{{f.label}}</button>
 </sc-for>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 8px 0 0; margin-bottom: 8px; font-size: 13px; color: #6b6b6b">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; margin: 32px 0 32px; padding: 16px 20px; border: 1px solid #CCCCCC; font-size: 13px; color: #6b6b6b">
 <span style="font-weight: 600; color: #000000">{{countLabel}}</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 3px 8px; background: #000000; color: #FFFFFF">Available</span> ready on site</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 3px 8px; background: #4D4D4D; color: #FFFFFF">Request</span> ask in advance</span>
