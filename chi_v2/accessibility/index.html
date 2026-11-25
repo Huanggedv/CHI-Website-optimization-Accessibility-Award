@@ -14,7 +14,7 @@
 <style>
 body{margin:0;background:#FFFFFF}
 #dc-root h1{font-size:clamp(40px,11vw,72px)!important}
-@media (max-width:600px){#dc-root section{padding-left:16px!important;padding-right:16px!important}#dc-root section:first-child{padding-top:32px!important}}
+@media (max-width:600px){#dc-root section{padding-left:16px!important;padding-right:16px!important}#dc-root section:first-child{padding-top:32px!important}#access-title{font-size:44px!important}}
 a{color:#000000}a:hover{color:#000000}
 button{font-family:inherit}
 button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2px}
@@ -27,32 +27,31 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 <div style="flex: 999 1 640px; min-width: 0">
 
 
-<section class="std-hero" aria-labelledby="access-title">
-<div class="std-hero-grid">
-<div>
-<h1 id="access-title">CHI 2027 Accessibility FAQ</h1>
-</div>
-<aside class="std-hero-card" aria-label="Request deadline">
-<span>Request deadline</span>
-<strong>12 March</strong>
-<a href="mailto:access@chi2027.acm.org">Email the Access Chairs</a>
+<section aria-labelledby="access-title" style="position: relative; overflow: hidden; background: #000000; color: #FFFFFF; margin-bottom: 72px">
+<img src="https://images.unsplash.com/photo-1795062705940-051dab1d1ac5?w=2400&amp;q=80&amp;auto=format&amp;fit=crop" alt="" style="position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 38%">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.75) 100%)"></div>
+<div style="position: relative; max-width: 1120px; margin: 0 auto; padding: 120px 24px 48px; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 40px">
+<h1 id="access-title" style="margin: 0; max-width: 720px; font-family: Geist, system-ui, sans-serif; font-size: 72px; line-height: 0.95; letter-spacing: -0.045em; color: #FFFFFF">CHI 2027 Accessibility FAQ</h1>
+<aside aria-label="Request deadline" style="flex: none; min-width: 240px; padding: 18px 22px; background: rgba(255,255,255,0.12); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255,255,255,0.28); display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.7)">Request deadline</span>
+<strong style="font-size: 20px; line-height: 1.2; font-weight: 500; color: #FFFFFF">12 March</strong>
+<a href="mailto:access@chi2027.acm.org" style="color: #FFFFFF; font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px">Email the Access Chairs</a>
 </aside>
 </div>
-</section>
-
-<section aria-labelledby="steps-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
-<h2 id="steps-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Request Process</h2>
-<div style="background: #F5F5F5; display: flex; flex-wrap: wrap">
+<div>
+<h2 id="steps-h" style="margin: 0 0 20px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; color: #FFFFFF">Request Process</h2>
+<div class="glass" style="background: rgba(255,255,255,0.12); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255,255,255,0.28); color: #FFFFFF; display: flex; flex-wrap: wrap">
 <div style="flex: 999 1 460px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px">
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Your requests</h3>
-<span style="font-size: 13px; color: #6b6b6b">{{progressText}}</span>
+<span style="font-size: 13px; color: rgba(255,255,255,0.7)">{{progressText}}</span>
 </div>
 <ol aria-label="Your requests and their status" style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px">
 <sc-for list="{{requests}}" as="rq" hint-placeholder-count="3">
 <li style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
 <span aria-hidden="true" style="display: block; height: 6px; background: {{rq.bar}}"></span>
-<span style="font-size: 15px; line-height: 1.3; color: #000000">{{rq.label}}</span>
+<span style="font-size: 15px; line-height: 1.3; color: #FFFFFF">{{rq.label}}</span>
 <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: {{rq.fg}}">
 <sc-if value="{{rq.isDone}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
 <sc-if value="{{rq.isReview}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg></sc-if>
@@ -61,13 +60,15 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 </sc-for>
 </ol>
 </div>
-<div style="flex: 1 1 280px; min-width: 0; padding: 24px; border-left: 1px solid #DDDDDD; display: flex; flex-direction: column; gap: 12px">
+<div style="flex: 1 1 280px; min-width: 0; padding: 24px; border-left: 1px solid rgba(255,255,255,0.28); display: flex; flex-direction: column; gap: 12px">
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">How to request</h3>
-<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.45; color: #333333">
-<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: #9a9a9a">1</span><span><b style="font-weight: 500; color: #000000">Register</b> · tick the support you need</span></li>
-<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: #9a9a9a">2</span><span><b style="font-weight: 500; color: #000000">By 12 March</b> · confirm your requests</span></li>
-<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: #9a9a9a">3</span><span><b style="font-weight: 500; color: #000000">On site</b> · ask any volunteer</span></li>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.8)">
+<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: rgba(255,255,255,0.5)">1</span><span><b style="font-weight: 500; color: #FFFFFF">Register</b> · tick the support you need</span></li>
+<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: rgba(255,255,255,0.5)">2</span><span><b style="font-weight: 500; color: #FFFFFF">By 12 March</b> · confirm your requests</span></li>
+<li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: rgba(255,255,255,0.5)">3</span><span><b style="font-weight: 500; color: #FFFFFF">On site</b> · ask any volunteer</span></li>
 </ol>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -244,9 +245,9 @@ class Component extends DCLogic {
       { code: 'P0', items: [chip('4 entrances, each with an accessible door', I), chip('Guide dog relief area · outside C & D', Q), chip('Gender-neutral restroom', N)] }
     ].map(function (fl, i, arr) { fl.line = i === arr.length - 1 ? 'transparent' : '#E5E5E5'; fl.href = '../map/?level=' + fl.code; fl.items.forEach(function (it) { it.href = it.href || fl.href; }); return fl; });
     var RS = {
-      done: ['Confirmed', '#000000', '#000000'],
-      review: ['In review', '#9a9a9a', '#333333'],
-      wait: ['Waiting for review', '#E5E5E5', '#6b6b6b']
+      done: ['Confirmed', '#FFFFFF', '#FFFFFF'],
+      review: ['In review', 'rgba(255,255,255,0.55)', 'rgba(255,255,255,0.85)'],
+      wait: ['Waiting for review', 'rgba(255,255,255,0.2)', 'rgba(255,255,255,0.6)']
     };
     var requests = [['Live captions', 'done'], ['Student volunteer guide', 'review'], ['Vegetarian meals', 'wait']].map(function (r) {
       var st = RS[r[1]];
