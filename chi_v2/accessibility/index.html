@@ -42,7 +42,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 
 <section aria-labelledby="steps-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
 <h2 id="steps-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Request Process</h2>
-<div style="background: #FFFFFF; border: 1px solid #E5E5E5; display: flex; flex-wrap: wrap">
+<div style="background: #F5F5F5; display: flex; flex-wrap: wrap">
 <div style="flex: 999 1 460px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px">
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Your requests</h3>
@@ -61,7 +61,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 </sc-for>
 </ol>
 </div>
-<div style="flex: 1 1 280px; min-width: 0; padding: 24px; border-left: 1px solid #E5E5E5; display: flex; flex-direction: column; gap: 12px">
+<div style="flex: 1 1 280px; min-width: 0; padding: 24px; border-left: 1px solid #DDDDDD; display: flex; flex-direction: column; gap: 12px">
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">How to request</h3>
 <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.45; color: #333333">
 <li style="display: flex; gap: 10px"><span style="flex: none; width: 16px; font-family: 'Geist Mono', monospace; color: #9a9a9a">1</span><span><b style="font-weight: 500; color: #000000">Register</b> · tick the support you need</span></li>
@@ -76,34 +76,34 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 <h2 id="answers-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">FAQ by Need</h2>
 <div role="group" aria-label="Filter answers by need" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 16px">
 <sc-for list="{{filters}}" as="f" hint-placeholder-count="10">
-<button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 48px; padding: 0 12px; border: 1px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-size: 15px; font-weight: 500; cursor: pointer">{{f.label}}</button>
+<button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 48px; padding: 0 12px; border: 0; background: {{f.bg}}; color: {{f.fg}}; font-size: 15px; font-weight: 500; cursor: pointer">{{f.label}}</button>
 </sc-for>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 14px 18px; background: #FFFFFF; border: 1px solid #E5E5E5; margin-bottom: 16px; font-size: 13px; color: #333333">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 8px 0 0; margin-bottom: 8px; font-size: 13px; color: #6b6b6b">
 <span style="font-weight: 600; color: #000000">{{countLabel}}</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #000000; background: #F2F2F2; color: #000000; font-weight: 500; font-size: 12px">Available</span> ready on site</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #000000; background: #F2F2F2; color: #000000; font-weight: 500; font-size: 12px">Request</span> ask in advance</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #4D4D4D; background: #F2F2F2; color: #4D4D4D; font-weight: 500; font-size: 12px">Not offered</span> not possible</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #555555; background: #F2F2F2; color: #555555; font-weight: 500; font-size: 12px">Pending</span> not confirmed yet</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 3px 8px; background: #000000; color: #FFFFFF">Available</span> ready on site</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 3px 8px; background: #4D4D4D; color: #FFFFFF">Request</span> ask in advance</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 2px 7px; border: 1px solid #000000; color: #000000">Not offered</span> not possible</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-block; font-weight: 500; font-size: 12px; line-height: 1.4; padding: 3px 0 1px; border-bottom: 1px dashed #000000; color: #000000">Pending</span> not confirmed yet</span>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px">
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0 32px">
 <sc-for list="{{shown}}" as="item" hint-placeholder-count="6">
-<article style="background: #FFFFFF; border: 1px solid #E5E5E5; border-left: 3px solid {{item.pillFg}}; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<article style="border-top: 1px solid #000000; padding: 20px 0 40px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
 <span style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">{{item.catLabel}}</span>
-<span style="flex: none; padding: 3px 8px; border: 1px solid {{item.pillFg}}; background: {{item.pillBg}}; color: {{item.pillFg}}; font-weight: 500; font-size: 12px">{{item.statusLabel}}</span>
+<span style="flex: none; display: inline-block; padding: {{item.pillPad}}; border: {{item.pillBorder}}; border-bottom: {{item.pillUnder}}; background: {{item.pillBg}}; color: {{item.pillFg}}; font-weight: 500; font-size: 12px; line-height: 1.4">{{item.statusLabel}}</span>
 </div>
 <h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{item.q}}</h3>
-<p style="margin: 0; padding-top: 12px; border-top: 1px solid #F2F2F2; font-size: 15px; line-height: 1.55; color: #333333">{{item.a}}</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #333333">{{item.a}}</p>
 <sc-if value="{{item.hasDetails}}" hint-placeholder-val="{{true}}">
 <button type="button" aria-expanded="{{item.expanded}}" onClick="{{item.toggle}}" style="align-self: flex-start; margin-top: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: none; background: none; color: #000000; font-size: 13px; font-weight: 600; cursor: pointer">{{item.toggleLabel}}
 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6-6"></path></svg>
 </button>
 </sc-if>
 <sc-if value="{{item.open}}" hint-placeholder-val="{{false}}">
-<p style="margin: 0; padding: 14px 16px; background: #FFFFFF; font-size: 15px; line-height: 1.55; color: #333333">{{item.d}}</p>
+<p style="margin: 0; padding: 14px 16px; background: #F5F5F5; font-size: 14px; line-height: 1.55; color: #333333">{{item.d}}</p>
 </sc-if>
 </article>
 </sc-for>
@@ -114,7 +114,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 <h2 id="venue-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Venue Facilities</h2>
 <p style="margin: -12px 0 20px; color: #6b6b6b; font-size: 14px">Tap a level or a space to open it on the <a href="../map/">Map</a>.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
-<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 8px 24px">
+<div style="flex: 999 1 560px; min-width: 0; border-top: 1px solid #000000">
 <sc-for list="{{floors}}" as="fl" hint-placeholder-count="5">
 <div style="display: flex; align-items: stretch; gap: 16px; padding: 16px 0; border-bottom: 1px solid {{fl.line}}">
 <a href="{{fl.href}}" aria-label="Open level {{fl.code}} on the Map" style="flex: none; width: 56px; min-height: 44px; background: #000000; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Geist, system-ui, sans-serif; font-weight: 700; font-size: 15px; text-decoration: none">{{fl.code}}</a>
@@ -126,18 +126,18 @@ button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2p
 </div>
 </sc-for>
 </div>
-<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 0">
+<div style="flex: 1 1 0; border-top: 1px solid #000000; padding: 16px 0 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
 <div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Longest walk</div>
 <div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">≈ 350 m</div>
 <div style="font-size: 13px; color: #6b6b6b">Main building → keynote auditorium</div>
 </div>
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="flex: 1 1 0; border-top: 1px solid #000000; padding: 16px 0 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
 <div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Indoor temperature</div>
 <div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">23–25 °C</div>
 <div style="font-size: 13px; color: #6b6b6b">Bring a light jacket</div>
 </div>
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="flex: 1 1 0; border-top: 1px solid #000000; padding: 16px 0 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
 <div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Emergency</div>
 <div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500; color: #000000">911</div>
 <div style="font-size: 13px; color: #6b6b6b">Non-urgent help: any student volunteer</div>
@@ -177,10 +177,10 @@ class Component extends DCLogic {
     ];
     var CAT = { mob: 'Mobility', hear: 'Hearing', vis: 'Vision', sens: 'Sensory & quiet', food: 'Food & diet', fam: 'Family & faith', anim: 'Service animals', pres: 'Presenting', health: 'Health & safety', gen: 'General' };
     var ST = {
-      ok: ['Available', '#F2F2F2', '#000000'],
-      req: ['Request', '#F2F2F2', '#000000'],
-      no: ['Not offered', '#F2F2F2', '#4D4D4D'],
-      pend: ['Pending', '#F2F2F2', '#555555']
+      ok: ['Available', '#000000', '#FFFFFF', '3px 8px', '0', '0'],
+      req: ['Request', '#4D4D4D', '#FFFFFF', '3px 8px', '0', '0'],
+      no: ['Not offered', 'transparent', '#000000', '2px 7px', '1px solid #000000', '1px solid #000000'],
+      pend: ['Pending', 'transparent', '#000000', '3px 0 1px', '0', '1px dashed #000000']
     };
     var ITEMS = [
       ['wheel', ['mob'], 'ok', 'Can I get around in a wheelchair?', 'Yes. Every entrance has an accessible door, and lifts connect all five floors.', 'Lifts fit standard wheelchairs; space may be tight for large power wheelchairs or mobility scooters. In the keynote auditorium, wheelchair seating is in the lower stalls near the entrances — the upper stalls are not accessible. Auditorium seats are about 42 cm wide with fixed armrests.'],
@@ -210,7 +210,7 @@ class Component extends DCLogic {
       var on = p[0] === 'all' ? !anySel : !!sel[p[0]];
       return {
         label: p[1], pressed: on ? 'true' : 'false',
-        bg: on ? '#000000' : '#FFFFFF', fg: on ? '#FFFFFF' : '#333333', border: on ? '#000000' : '#E5E5E5',
+        bg: on ? '#000000' : '#F2F2F2', fg: on ? '#FFFFFF' : '#333333', border: 'transparent',
         pick: function () {
           if (p[0] === 'all') { self.setState({ sel: {} }); return; }
           var n = Object.assign({}, self.state.sel); n[p[0]] = !n[p[0]]; self.setState({ sel: n });
@@ -222,7 +222,7 @@ class Component extends DCLogic {
       var isOpen = !!self.state.open[it[0]];
       return {
         catLabel: it[1].map(function (c) { return CAT[c]; }).join(' · '),
-        statusLabel: s[0], pillBg: s[1], pillFg: s[2],
+        statusLabel: s[0], pillBg: s[1], pillFg: s[2], pillPad: s[3], pillBorder: s[4], pillUnder: s[5],
         q: it[3], a: it[4], d: it[5],
         hasDetails: it[5] !== '', open: isOpen && it[5] !== '',
         expanded: isOpen ? 'true' : 'false',
@@ -234,7 +234,7 @@ class Component extends DCLogic {
         }
       };
     });
-    var G = { bg: '#F2F2F2', fg: '#000000', border: '#C6DCCB' }, N = G, Q = G, I = G;
+    var G = { bg: '#F2F2F2', fg: '#000000', border: 'transparent' }, N = G, Q = G, I = G;
     function chip(l, c, room) { return { label: l, bg: c.bg, fg: c.fg, border: c.border, href: room ? '../map/?room=' + encodeURIComponent(room) : null }; }
     var floors = [
       { code: 'P2', items: [chip('Childcare area', I, 'P2 - Childcare'), chip('Nursing room', I, 'P2 - Childcare'), chip('Gender-neutral restroom', N)] },
@@ -242,7 +242,7 @@ class Component extends DCLogic {
       { code: 'P1', items: [chip('Paper session rooms 111–134', N), chip('Gender-neutral restroom', N)] },
       { code: 'M1', items: [chip('Gender-neutral restroom', N)] },
       { code: 'P0', items: [chip('4 entrances, each with an accessible door', I), chip('Guide dog relief area · outside C & D', Q), chip('Gender-neutral restroom', N)] }
-    ].map(function (fl, i, arr) { fl.line = i === arr.length - 1 ? 'transparent' : '#F2F2F2'; fl.href = '../map/?level=' + fl.code; fl.items.forEach(function (it) { it.href = it.href || fl.href; }); return fl; });
+    ].map(function (fl, i, arr) { fl.line = i === arr.length - 1 ? 'transparent' : '#E5E5E5'; fl.href = '../map/?level=' + fl.code; fl.items.forEach(function (it) { it.href = it.href || fl.href; }); return fl; });
     var RS = {
       done: ['Confirmed', '#000000', '#000000'],
       review: ['In review', '#9a9a9a', '#333333'],
