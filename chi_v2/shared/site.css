@@ -1,36 +1,37 @@
 /* ==========================================================================
    CHI 2027 merged site — shared tokens + sidebar shell
-   One palette for every page: warm paper, ink, deep green, lime (on dark only), rust.
+   Black and white, after Figma Config: Geist + Geist Mono, thin grey or black rules, square corners.
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 
 :root {
-  --ink: #171816;
-  --muted: #666761;
-  --paper: #f4f3ef;
-  --card: #fbfaf7;
-  --line: #d8d7d1;
-  --soft: #e9e8e2;
-  --accent: #314f44;        /* deep green: buttons, selected states, links */
-  --accent-strong: #1c3a2e;
-  --accent-soft: #dce6e0;
-  --deep: #0f1f19;          /* dark surfaces */
-  --deep-2: #1c3a2e;
-  --lime: #d3fb63;          /* highlight — only on dark surfaces */
-  --rust: #a54b25;          /* secondary emphasis, AA on paper */
-  --rust-soft: #f5e3d8;
-  --cream: #f3f1e8;
-  --serif: 'Manrope', 'DM Sans', sans-serif;
-  --sans: 'DM Sans', system-ui, sans-serif;
+  --ink: #000000;
+  --muted: #6b6b6b;
+  --paper: #ffffff;
+  --card: #ffffff;
+  --line: #e5e5e5;
+  --soft: #f2f2f2;
+  --accent: #000000;        /* deep green: buttons, selected states, links */
+  --accent-strong: #000000;
+  --accent-soft: #f2f2f2;
+  --deep: #000000;          /* dark surfaces */
+  --deep-2: #000000;
+  --lime: #ffffff;          /* highlight — only on dark surfaces */
+  --rust: #000000;          /* secondary emphasis, AA on paper */
+  --rust-soft: #f2f2f2;
+  --cream: #ffffff;
+  --serif: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+  --sans: 'Geist', system-ui, sans-serif;
   --shell-w: 248px;
-  --focus: #6c8f80;
+  --focus: #000000;
 }
 
 .chi-side, .chi-side *, .chi-topbar, .chi-topbar *, .chi-skip, .chi-toast { box-sizing: border-box; }
 .chi-shell-body { margin: 0; padding-left: var(--shell-w); font-family: var(--sans); color: var(--ink); background: var(--paper); }
 .chi-shell-body *:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
-.chi-skip { position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 14px; border-radius: 6px; color: var(--deep); background: var(--lime); font: 700 14px/1 var(--sans); text-decoration: none; }
+.chi-skip { position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 14px; border-radius: 0; color: var(--deep); background: var(--lime); font: 700 14px/1 var(--sans); text-decoration: none; }
 .chi-skip:focus { top: 12px; }
 
 .chi-side {
@@ -40,14 +41,14 @@
   font-family: var(--sans);
 }
 .chi-brand { display: flex; align-items: center; gap: 12px; margin: 0 6px 22px; color: inherit; text-decoration: none; }
-.chi-brand-mark { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 10px; color: var(--deep); background: var(--lime); font: 800 13px/1 var(--serif); letter-spacing: -.03em; }
+.chi-brand-mark { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 0; color: var(--deep); background: var(--lime); font: 800 13px/1 var(--serif); letter-spacing: -.03em; }
 .chi-brand b { display: block; font: 800 18px/1.1 var(--serif); letter-spacing: -.04em; }
-.chi-brand small { display: block; margin-top: 3px; color: #9bb0a8; font-size: 12px; }
+.chi-brand small { display: block; margin-top: 3px; color: #9a9a9a; font-size: 12px; }
 
 .chi-nav { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .chi-nav a {
   position: relative; display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px;
-  border-radius: 8px; color: #c8d3ce; font-size: 14.5px; font-weight: 500; text-decoration: none;
+  border-radius: 0; color: #cccccc; font-size: 14.5px; font-weight: 500; text-decoration: none;
   transition: background .15s ease, color .15s ease;
 }
 .chi-nav a svg { width: 19px; height: 19px; flex: none; }
@@ -56,9 +57,9 @@
 .chi-nav .chi-badge { margin-left: auto; min-width: 22px; padding: 2px 7px; border-radius: 99px; color: var(--deep); background: var(--cream); font-size: 11.5px; font-weight: 700; text-align: center; }
 .chi-nav a[aria-current="page"] .chi-badge { color: var(--lime); background: var(--deep); }
 .chi-sep { height: 1px; margin: 12px 8px; background: rgba(255,255,255,.1); }
-.chi-label { margin: 4px 12px 6px; color: #7f948b; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.chi-label { margin: 4px 12px 6px; color: #8c8c8c; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 
-.chi-side-foot { margin-top: auto; padding: 14px 12px 0; color: #9bb0a8; font-size: 11.5px; line-height: 1.5; }
+.chi-side-foot { margin-top: auto; padding: 14px 12px 0; color: #9a9a9a; font-size: 11.5px; line-height: 1.5; }
 .chi-side-foot b { display: block; margin-bottom: 4px; color: var(--lime); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
 .chi-side-foot p { margin: 0 0 10px; }
 
@@ -78,12 +79,12 @@
   .chi-side { top: 58px; transform: translateX(-100%); transition: transform .25s ease; width: min(300px, 86vw); box-shadow: 20px 0 60px rgba(0,0,0,.25); }
   .chi-side > .chi-brand { display: none; }
   .chi-shell-body.chi-nav-open .chi-side { transform: none; }
-  .chi-scrim { position: fixed; inset: 58px 0 0 0; z-index: 89; background: rgba(15,31,25,.4); }
+  .chi-scrim { position: fixed; inset: 58px 0 0 0; z-index: 89; background: rgba(0,0,0,.4); }
 }
 @media (prefers-reduced-motion: reduce) { .chi-side { transition: none; } }
 
 /* Shared small parts the static pages use */
-.chi-toast { position: fixed; left: 50%; bottom: 24px; z-index: 120; transform: translate(-50%, 20px); padding: 12px 18px; border-radius: 10px; color: var(--cream); background: var(--deep); font: 500 14px/1.3 var(--sans); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.chi-toast { position: fixed; left: 50%; bottom: 24px; z-index: 120; transform: translate(-50%, 20px); padding: 12px 18px; border-radius: 0; color: var(--cream); background: var(--deep); font: 500 14px/1.3 var(--sans); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
 .chi-toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ==========================================================================
@@ -91,7 +92,7 @@
    Small overrides that bring the four original page styles onto one spec.
    Prefixed with body.chi-shell-body so they win over each page's own CSS.
    ========================================================================== */
-:root { --r: 4px; --r-panel: 16px; --t-page: clamp(40px, 5vw, 56px); --t-section: 28px; }
+:root { --r: 0px; --r-panel: 0px; --t-page: clamp(40px, 5vw, 56px); --t-section: 28px; }
 
 /* Page titles: one size and weight everywhere */
 body.chi-shell-body .program-intro h1,
@@ -100,10 +101,10 @@ body.chi-shell-body .page-title-block h1,
 body.chi-shell-body #page-title,
 body.chi-shell-body .my h1,
 body.chi-shell-body #dc-root h1 {
-  font: 600 var(--t-page)/1.02 var(--serif) !important;
+  font: 400 var(--t-page)/1.02 var(--serif) !important;
   letter-spacing: -.04em !important;
 }
-body.chi-shell-body .detail-hero h1 { font: 600 clamp(36px, 4.4vw, 48px)/1.05 var(--serif) !important; letter-spacing: -.035em !important; }
+body.chi-shell-body .detail-hero h1 { font: 400 clamp(36px, 4.4vw, 48px)/1.05 var(--serif) !important; letter-spacing: -.035em !important; }
 body.chi-shell-body .program-intro { padding: 48px 0 36px; }
 
 /* Section headings */
@@ -111,15 +112,15 @@ body.chi-shell-body #dc-root h2,
 body.chi-shell-body .sec-head h2,
 body.chi-shell-body .section-heading h2,
 body.chi-shell-body #directory-title {
-  font: 700 var(--t-section)/1.15 var(--serif) !important;
+  font: 400 var(--t-section)/1.15 var(--serif) !important;
   letter-spacing: -.03em !important;
 }
 
 /* Primary buttons → accent; secondary → outlined */
 body.chi-shell-body .primary-button,
 body.chi-shell-body .btn.primary,
-body.chi-shell-body #dc-root button[style*="background: #171816"],
-body.chi-shell-body #dc-root a[style*="background: #171816"] {
+body.chi-shell-body #dc-root button[style*="background: #000000"],
+body.chi-shell-body #dc-root a[style*="background: #000000"] {
   background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important; border-radius: var(--r) !important;
 }
 body.chi-shell-body .secondary-button { border-radius: var(--r); }
@@ -180,10 +181,44 @@ body.chi-shell-body .std-eyebrow { color: var(--accent-strong); font: 800 11px/1
 body.chi-shell-body .std-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: start; }
 body.chi-shell-body .std-hero h1 { max-width: 690px; margin: 0; }
 body.chi-shell-body .std-hero-copy { max-width: 760px; margin: 22px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
-body.chi-shell-body .std-hero-card { padding: 22px; border-left: 4px solid var(--accent); background: #fff; box-shadow: 0 6px 24px rgba(15, 31, 25, .06); }
+body.chi-shell-body .std-hero-card { padding: 22px; border-left: 4px solid var(--accent); background: #fff; box-shadow: 0 6px 24px rgba(0,0,0, .06); }
 body.chi-shell-body .std-hero-card span { display: block; color: var(--muted); font: 800 11px/1.4 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
 body.chi-shell-body .std-hero-card strong { display: block; margin: 7px 0 14px; color: var(--ink); font: 700 17px/1.3 var(--sans); }
 body.chi-shell-body .std-hero-card p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 body.chi-shell-body .std-hero-card a { color: var(--accent-strong); font-size: 13px; font-weight: 750; text-decoration: none; }
 body.chi-shell-body .std-hero-card a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 900px) { body.chi-shell-body .std-hero-grid { grid-template-columns: 1fr; gap: 26px; } body.chi-shell-body .std-hero { padding: 32px 16px 28px; } }
+
+/* ==========================================================================
+   Config layer — white pages, black type, thin rules, mono labels
+   ========================================================================== */
+.chi-side { color: #000; background: #fff; border-right: 1px solid #e5e5e5; }
+.chi-brand small { color: #6b6b6b; }
+.chi-brand-mark { color: #fff; background: #000; border-radius: 0; font-family: var(--mono); font-weight: 500; letter-spacing: 0; }
+.chi-brand b { font-weight: 500; letter-spacing: -.03em; }
+.chi-nav a { border-radius: 0; color: #4d4d4d; font-weight: 400; }
+.chi-nav a:hover { color: #000; background: #f2f2f2; }
+.chi-nav a[aria-current="page"] { color: #fff; background: #000; font-weight: 500; }
+.chi-nav .chi-badge { color: #000; background: #f2f2f2; border-radius: 0; font-family: var(--mono); font-weight: 500; }
+.chi-nav a[aria-current="page"] .chi-badge { color: #000; background: #fff; }
+.chi-sep { background: #e5e5e5; }
+.chi-label { color: #6b6b6b; font-family: var(--mono); font-weight: 400; }
+.chi-skip { color: #fff; background: #000; border-radius: 0; }
+.chi-toast { color: #fff; background: #000; border-radius: 0; }
+@media (max-width: 900px) {
+  .chi-topbar { color: #000; background: #fff; border-bottom: 1px solid #e5e5e5; }
+  .chi-menu { color: #000; border-color: #000; border-radius: 0; font-family: var(--mono); font-weight: 400; }
+  .chi-scrim { background: rgba(0,0,0,.35); }
+}
+body.chi-shell-body h1, body.chi-shell-body h2 { font-weight: 400 !important; }
+body.chi-shell-body h3, body.chi-shell-body h4 { font-weight: 500 !important; }
+/* Small uppercase labels speak in mono, like Config */
+body.chi-shell-body .std-eyebrow,
+body.chi-shell-body .std-hero-card span,
+body.chi-shell-body #dc-root [style*="text-transform: uppercase"] { font-family: var(--mono) !important; font-weight: 400 !important; letter-spacing: .04em !important; }
+body.chi-shell-body .std-hero-card { border: 1px solid #000; border-left-width: 1px; box-shadow: none; }
+body.chi-shell-body .std-hero-card strong { font-weight: 500; }
+body.chi-shell-body .tag,
+body.chi-shell-body .card-extras .keyword-list button,
+body.chi-shell-body .detail-keywords button { color: #000 !important; background: #fff !important; border: 1px solid #e5e5e5 !important; font-weight: 400 !important; }
+body.chi-shell-body .card-extras .keyword-list button.is-active { color: #fff !important; background: #000 !important; border-color: #000 !important; }

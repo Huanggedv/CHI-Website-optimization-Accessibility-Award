@@ -12,15 +12,15 @@
 <template id="dc-template">
 <helmet>
 <style>
-body{margin:0;background:#F4F3EF}
+body{margin:0;background:#FFFFFF}
 #dc-root h1{font-size:clamp(40px,11vw,72px)!important}
 @media (max-width:600px){#dc-root section{padding-left:16px!important;padding-right:16px!important}#dc-root section:first-child{padding-top:32px!important}}
-a{color:#1C3A2E}a:hover{color:#0F1F19}
+a{color:#000000}a:hover{color:#000000}
 button{font-family:inherit}
-button:focus-visible,a:focus-visible{outline:3px solid #314F44;outline-offset:2px}
+button:focus-visible,a:focus-visible{outline:3px solid #000000;outline-offset:2px}
 </style>
 </helmet>
-<div style="font-family: 'DM Sans', system-ui, sans-serif; color: #171816; background: #F4F3EF; min-height: 100vh">
+<div style="font-family: 'Geist', system-ui, sans-serif; color: #000000; background: #FFFFFF; min-height: 100vh">
 
 <div style="display: flex; flex-wrap: wrap; align-items: stretch">
 
@@ -41,82 +41,82 @@ button:focus-visible,a:focus-visible{outline:3px solid #314F44;outline-offset:2p
 </section>
 
 <section aria-labelledby="steps-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
-<h2 id="steps-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Request Process</h2>
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 20px">
+<h2 id="steps-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Request Process</h2>
+<div style="background: #FFFFFF; border: 1px solid #E5E5E5; padding: 24px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px">
-<h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Your Request Status</h3>
-<span style="font-size: 13px; font-weight: 600; color: #1C3A2E">{{progressText}}</span>
+<h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Your Request Status</h3>
+<span style="font-size: 13px; font-weight: 600; color: #000000">{{progressText}}</span>
 </div>
-<div role="progressbar" aria-label="Request progress" aria-valuemin="0" aria-valuemax="{{nTotal}}" aria-valuenow="{{nDone}}" aria-valuetext="{{progressText}}" style="height: 8px; background: #ECEBE5; display: flex">
-<div style="height: 100%; width: {{donePct}}; background: #314F44"></div>
-<div style="height: 100%; width: {{reviewPct}}; background: #8FA89C"></div>
+<div role="progressbar" aria-label="Request progress" aria-valuemin="0" aria-valuemax="{{nTotal}}" aria-valuenow="{{nDone}}" aria-valuetext="{{progressText}}" style="height: 8px; background: #F2F2F2; display: flex">
+<div style="height: 100%; width: {{donePct}}; background: #000000"></div>
+<div style="height: 100%; width: {{reviewPct}}; background: #9a9a9a"></div>
 </div>
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px">
 <sc-for list="{{requests}}" as="rq" hint-placeholder-count="3">
-<li style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 16px; background: #F4F3EF">
+<li style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 16px; background: #FFFFFF">
 <span role="img" aria-label="{{rq.status}}" style="flex: none; width: 28px; height: 28px; box-sizing: border-box; border: 1px solid {{rq.border}}; background: {{rq.bg}}; color: {{rq.fg}}; display: flex; align-items: center; justify-content: center">
 <sc-if value="{{rq.isDone}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
 <sc-if value="{{rq.isReview}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg></sc-if>
 <sc-if value="{{rq.isWaiting}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"></circle></svg></sc-if>
 </span>
-<span style="font-size: 15px; color: #171816">{{rq.label}}</span>
+<span style="font-size: 15px; color: #000000">{{rq.label}}</span>
 </li>
 </sc-for>
 </ul>
-<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #E9E8E2; font-size: 13px; color: #666761">
-<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #314F44; background: #314F44; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>Confirmed</span>
-<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #314F44; background: #DCE6E0; color: #1C3A2E; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg></span>In review</span>
-<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #C7C6BF; background: #FFFFFF; color: #666761; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"></circle></svg></span>Submitted, waiting for review</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #F2F2F2; font-size: 13px; color: #6b6b6b">
+<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #000000; background: #000000; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>Confirmed</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #000000; background: #F2F2F2; color: #000000; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg></span>In review</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><span style="flex: none; width: 20px; height: 20px; box-sizing: border-box; border: 1px solid #CCCCCC; background: #FFFFFF; color: #6b6b6b; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"></circle></svg></span>Submitted, waiting for review</span>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px">
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; gap: 16px">
-<div style="flex: none; width: 36px; height: 36px; background: #DCE6E0; color: #1C3A2E; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">1</div>
-<div><h3 style="margin: 0 0 6px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">When you register</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">Answer “Yes” to the disability question, then tick the support you need.</p></div>
+<div style="background: #FFFFFF; border: 1px solid #E5E5E5; padding: 24px; display: flex; gap: 16px">
+<div style="flex: none; width: 36px; height: 36px; background: #F2F2F2; color: #000000; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">1</div>
+<div><h3 style="margin: 0 0 6px; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">When you register</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #333333">Answer “Yes” to the disability question, then tick the support you need.</p></div>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; gap: 16px">
-<div style="flex: none; width: 36px; height: 36px; background: #DCE6E0; color: #1C3A2E; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">2</div>
-<div><h3 style="margin: 0 0 6px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">By 12 March</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">Confirm sign language, captions, volunteer help and dietary needs.</p></div>
+<div style="background: #FFFFFF; border: 1px solid #E5E5E5; padding: 24px; display: flex; gap: 16px">
+<div style="flex: none; width: 36px; height: 36px; background: #F2F2F2; color: #000000; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">2</div>
+<div><h3 style="margin: 0 0 6px; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">By 12 March</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #333333">Confirm sign language, captions, volunteer help and dietary needs.</p></div>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; gap: 16px">
-<div style="flex: none; width: 36px; height: 36px; background: #DCE6E0; color: #1C3A2E; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">3</div>
-<div><h3 style="margin: 0 0 6px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">At the venue</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">Ask any student volunteer for help. Quiet room: <a href="../map/?room=M2%20-%20Room%20M219">M219, floor M2</a>.</p></div>
+<div style="background: #FFFFFF; border: 1px solid #E5E5E5; padding: 24px; display: flex; gap: 16px">
+<div style="flex: none; width: 36px; height: 36px; background: #F2F2F2; color: #000000; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">3</div>
+<div><h3 style="margin: 0 0 6px; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">At the venue</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #333333">Ask any student volunteer for help. Quiet room: <a href="../map/?room=M2%20-%20Room%20M219">M219, floor M2</a>.</p></div>
 </div>
 </div>
 </section>
 
 <section aria-labelledby="answers-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
-<h2 id="answers-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">FAQ by Need</h2>
+<h2 id="answers-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">FAQ by Need</h2>
 <div role="group" aria-label="Filter answers by need" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 16px">
 <sc-for list="{{filters}}" as="f" hint-placeholder-count="10">
 <button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 48px; padding: 0 12px; border: 1px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-size: 15px; font-weight: 500; cursor: pointer">{{f.label}}</button>
 </sc-for>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 14px 18px; background: #FFFFFF; border: 1px solid #D8D7D1; margin-bottom: 16px; font-size: 13px; color: #3A3B36">
-<span style="font-weight: 600; color: #171816">{{countLabel}}</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #2C6A3F; background: #E1EEE4; color: #2C6A3F; font-weight: 500; font-size: 12px">Available</span> ready on site</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #1C3A2E; background: #DCE6E0; color: #1C3A2E; font-weight: 500; font-size: 12px">Request</span> ask in advance</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #4E504A; background: #ECEBE5; color: #4E504A; font-weight: 500; font-size: 12px">Not offered</span> not possible</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #7A5200; background: #FBF0D9; color: #7A5200; font-weight: 500; font-size: 12px">Pending</span> not confirmed yet</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 14px 18px; background: #FFFFFF; border: 1px solid #E5E5E5; margin-bottom: 16px; font-size: 13px; color: #333333">
+<span style="font-weight: 600; color: #000000">{{countLabel}}</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #000000; background: #F2F2F2; color: #000000; font-weight: 500; font-size: 12px">Available</span> ready on site</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #000000; background: #F2F2F2; color: #000000; font-weight: 500; font-size: 12px">Request</span> ask in advance</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #4D4D4D; background: #F2F2F2; color: #4D4D4D; font-weight: 500; font-size: 12px">Not offered</span> not possible</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 3px 8px; border: 1px solid #555555; background: #F2F2F2; color: #555555; font-weight: 500; font-size: 12px">Pending</span> not confirmed yet</span>
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px">
 <sc-for list="{{shown}}" as="item" hint-placeholder-count="6">
-<article style="background: #FFFFFF; border: 1px solid #D8D7D1; border-left: 3px solid {{item.pillFg}}; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<article style="background: #FFFFFF; border: 1px solid #E5E5E5; border-left: 3px solid {{item.pillFg}}; padding: 24px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
-<span style="font-size: 12px; color: #666761; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">{{item.catLabel}}</span>
+<span style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">{{item.catLabel}}</span>
 <span style="flex: none; padding: 3px 8px; border: 1px solid {{item.pillFg}}; background: {{item.pillBg}}; color: {{item.pillFg}}; font-weight: 500; font-size: 12px">{{item.statusLabel}}</span>
 </div>
-<h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{item.q}}</h3>
-<p style="margin: 0; padding-top: 12px; border-top: 1px solid #E9E8E2; font-size: 15px; line-height: 1.55; color: #3A3B36">{{item.a}}</p>
+<h3 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{item.q}}</h3>
+<p style="margin: 0; padding-top: 12px; border-top: 1px solid #F2F2F2; font-size: 15px; line-height: 1.55; color: #333333">{{item.a}}</p>
 <sc-if value="{{item.hasDetails}}" hint-placeholder-val="{{true}}">
-<button type="button" aria-expanded="{{item.expanded}}" onClick="{{item.toggle}}" style="align-self: flex-start; margin-top: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: none; background: none; color: #1C3A2E; font-size: 13px; font-weight: 600; cursor: pointer">{{item.toggleLabel}}
+<button type="button" aria-expanded="{{item.expanded}}" onClick="{{item.toggle}}" style="align-self: flex-start; margin-top: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: none; background: none; color: #000000; font-size: 13px; font-weight: 600; cursor: pointer">{{item.toggleLabel}}
 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6-6"></path></svg>
 </button>
 </sc-if>
 <sc-if value="{{item.open}}" hint-placeholder-val="{{false}}">
-<p style="margin: 0; padding: 14px 16px; background: #F4F3EF; font-size: 15px; line-height: 1.55; color: #3A3B36">{{item.d}}</p>
+<p style="margin: 0; padding: 14px 16px; background: #FFFFFF; font-size: 15px; line-height: 1.55; color: #333333">{{item.d}}</p>
 </sc-if>
 </article>
 </sc-for>
@@ -124,13 +124,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #314F44;outline-offset:2p
 </section>
 
 <section aria-labelledby="venue-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
-<h2 id="venue-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Venue Facilities</h2>
-<p style="margin: -12px 0 20px; color: #666761; font-size: 14px">Tap a level or a space to open it on the <a href="../map/">Map</a>.</p>
+<h2 id="venue-h" style="margin: 0 0 24px; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Venue Facilities</h2>
+<p style="margin: -12px 0 20px; color: #6b6b6b; font-size: 14px">Tap a level or a space to open it on the <a href="../map/">Map</a>.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
-<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D7D1; padding: 8px 24px">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 8px 24px">
 <sc-for list="{{floors}}" as="fl" hint-placeholder-count="5">
 <div style="display: flex; align-items: stretch; gap: 16px; padding: 16px 0; border-bottom: 1px solid {{fl.line}}">
-<a href="{{fl.href}}" aria-label="Open level {{fl.code}} on the Map" style="flex: none; width: 56px; min-height: 44px; background: #0F1F19; color: #D3FB63; display: flex; align-items: center; justify-content: center; font-family: Manrope, 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; text-decoration: none">{{fl.code}}</a>
+<a href="{{fl.href}}" aria-label="Open level {{fl.code}} on the Map" style="flex: none; width: 56px; min-height: 44px; background: #000000; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Geist, system-ui, sans-serif; font-weight: 700; font-size: 15px; text-decoration: none">{{fl.code}}</a>
 <div style="display: flex; flex-wrap: wrap; align-items: center; align-content: center; gap: 8px">
 <sc-for list="{{fl.items}}" as="it" hint-placeholder-count="3">
 <a href="{{it.href}}" style="display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px; padding: 0 14px; border: 1px solid {{it.border}}; background: {{it.bg}}; color: {{it.fg}}; font-size: 13px; font-weight: 500; text-decoration: none">{{it.label}}</a>
@@ -140,31 +140,31 @@ button:focus-visible,a:focus-visible{outline:3px solid #314F44;outline-offset:2p
 </sc-for>
 </div>
 <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
-<div style="font-size: 12px; color: #666761; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Longest walk</div>
-<div style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">≈ 350 m</div>
-<div style="font-size: 13px; color: #666761">Main building → keynote auditorium</div>
+<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Longest walk</div>
+<div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">≈ 350 m</div>
+<div style="font-size: 13px; color: #6b6b6b">Main building → keynote auditorium</div>
 </div>
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
-<div style="font-size: 12px; color: #666761; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Indoor temperature</div>
-<div style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">23–25 °C</div>
-<div style="font-size: 13px; color: #666761">Bring a light jacket</div>
+<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Indoor temperature</div>
+<div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">23–25 °C</div>
+<div style="font-size: 13px; color: #6b6b6b">Bring a light jacket</div>
 </div>
-<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
-<div style="font-size: 12px; color: #666761; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Emergency</div>
-<div style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500; color: #1C3A2E">911</div>
-<div style="font-size: 13px; color: #666761">Non-urgent help: any student volunteer</div>
+<div style="flex: 1 1 0; background: #FFFFFF; border: 1px solid #E5E5E5; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+<div style="font-size: 12px; color: #6b6b6b; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase">Emergency</div>
+<div style="font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500; color: #000000">911</div>
+<div style="font-size: 13px; color: #6b6b6b">Non-urgent help: any student volunteer</div>
 </div>
 </div>
 </div>
 </section>
 
 <footer style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
-<div style="background: #171816; color: #FFFFFF; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<div style="background: #000000; color: #FFFFFF; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
 <div style="flex: 999 1 420px; min-width: 0">
-<h2 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Contact the Access Chairs</h2>
+<h2 style="margin: 0; font-family: Geist, system-ui, sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Contact the Access Chairs</h2>
 </div>
-<a href="mailto:access@chi2027.acm.org" style="flex: none; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: #FFFFFF; color: #171816; font-weight: 500; font-size: 15px; text-decoration: none">access@chi2027.acm.org</a>
+<a href="mailto:access@chi2027.acm.org" style="flex: none; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: #FFFFFF; color: #000000; font-weight: 500; font-size: 15px; text-decoration: none">access@chi2027.acm.org</a>
 </div>
 </footer>
 
@@ -190,10 +190,10 @@ class Component extends DCLogic {
     ];
     var CAT = { mob: 'Mobility', hear: 'Hearing', vis: 'Vision', sens: 'Sensory & quiet', food: 'Food & diet', fam: 'Family & faith', anim: 'Service animals', pres: 'Presenting', health: 'Health & safety', gen: 'General' };
     var ST = {
-      ok: ['Available', '#E1EEE4', '#2C6A3F'],
-      req: ['Request', '#DCE6E0', '#1C3A2E'],
-      no: ['Not offered', '#ECEBE5', '#4E504A'],
-      pend: ['Pending', '#FBF0D9', '#7A5200']
+      ok: ['Available', '#F2F2F2', '#000000'],
+      req: ['Request', '#F2F2F2', '#000000'],
+      no: ['Not offered', '#F2F2F2', '#4D4D4D'],
+      pend: ['Pending', '#F2F2F2', '#555555']
     };
     var ITEMS = [
       ['wheel', ['mob'], 'ok', 'Can I get around in a wheelchair?', 'Yes. Every entrance has an accessible door, and lifts connect all five floors.', 'Lifts fit standard wheelchairs; space may be tight for large power wheelchairs or mobility scooters. In the keynote auditorium, wheelchair seating is in the lower stalls near the entrances — the upper stalls are not accessible. Auditorium seats are about 42 cm wide with fixed armrests.'],
@@ -223,7 +223,7 @@ class Component extends DCLogic {
       var on = p[0] === 'all' ? !anySel : !!sel[p[0]];
       return {
         label: p[1], pressed: on ? 'true' : 'false',
-        bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3A3B36', border: on ? '#314F44' : '#D8D7D1',
+        bg: on ? '#000000' : '#FFFFFF', fg: on ? '#FFFFFF' : '#333333', border: on ? '#000000' : '#E5E5E5',
         pick: function () {
           if (p[0] === 'all') { self.setState({ sel: {} }); return; }
           var n = Object.assign({}, self.state.sel); n[p[0]] = !n[p[0]]; self.setState({ sel: n });
@@ -247,7 +247,7 @@ class Component extends DCLogic {
         }
       };
     });
-    var G = { bg: '#E1EEE4', fg: '#2C6A3F', border: '#C6DCCB' }, N = G, Q = G, I = G;
+    var G = { bg: '#F2F2F2', fg: '#000000', border: '#C6DCCB' }, N = G, Q = G, I = G;
     function chip(l, c, room) { return { label: l, bg: c.bg, fg: c.fg, border: c.border, href: room ? '../map/?room=' + encodeURIComponent(room) : null }; }
     var floors = [
       { code: 'P2', items: [chip('Childcare area', I, 'P2 - Childcare'), chip('Nursing room', I, 'P2 - Childcare'), chip('Gender-neutral restroom', N)] },
@@ -255,11 +255,11 @@ class Component extends DCLogic {
       { code: 'P1', items: [chip('Paper session rooms 111–134', N), chip('Gender-neutral restroom', N)] },
       { code: 'M1', items: [chip('Gender-neutral restroom', N)] },
       { code: 'P0', items: [chip('4 entrances, each with an accessible door', I), chip('Guide dog relief area · outside C & D', Q), chip('Gender-neutral restroom', N)] }
-    ].map(function (fl, i, arr) { fl.line = i === arr.length - 1 ? 'transparent' : '#E9E8E2'; fl.href = '../map/?level=' + fl.code; fl.items.forEach(function (it) { it.href = it.href || fl.href; }); return fl; });
+    ].map(function (fl, i, arr) { fl.line = i === arr.length - 1 ? 'transparent' : '#F2F2F2'; fl.href = '../map/?level=' + fl.code; fl.items.forEach(function (it) { it.href = it.href || fl.href; }); return fl; });
     var RS = {
-      done: ['Confirmed', '#314F44', '#FFFFFF', '#314F44'],
-      review: ['In review', '#DCE6E0', '#1C3A2E', '#314F44'],
-      wait: ['Submitted, waiting for review', '#FFFFFF', '#666761', '#C7C6BF']
+      done: ['Confirmed', '#000000', '#FFFFFF', '#000000'],
+      review: ['In review', '#F2F2F2', '#000000', '#000000'],
+      wait: ['Submitted, waiting for review', '#FFFFFF', '#6b6b6b', '#CCCCCC']
     };
     var requests = [['Live captions', 'done'], ['Student volunteer guide', 'review'], ['Vegetarian meals', 'wait']].map(function (r) {
       var st = RS[r[1]];
