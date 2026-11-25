@@ -1,0 +1,1428 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A CHI 2027 people-discovery prototype focused on meaningful conference connections."
+    />
+    <title>People · CHI 2027</title>
+    <link rel="icon" href="../shared/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../shared/site.css" />
+    <script src="../shared/data.js"></script>
+    <style>
+:root {
+  /* aliases onto the shared site palette (shared/site.css) */
+  --panel: #ffffff;
+  --canvas: var(--paper);
+  --purple: var(--accent);
+  --purple-strong: var(--accent-strong);
+  --purple-soft: var(--accent-soft);
+  --navy: var(--deep);
+  --green: #2c6a3f;
+  --green-soft: #e1eee4;
+  --orange: var(--rust);
+  --orange-soft: var(--rust-soft);
+  --shadow: 0 18px 50px rgba(15, 31, 25, 0.13);
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--canvas);
+}
+h1, h2, h3 { font-family: var(--serif); }
+.drawer-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; }
+.drawer-links a { color: var(--accent); font-weight: 700; font-size: 14px; }
+.author-papers { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+.author-papers a { display: grid; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); background: #fff; text-decoration: none; }
+.author-papers a:hover { border-color: var(--accent); }
+.author-papers small { color: var(--muted); }
+.drawer-actions a.secondary-button { display: inline-flex; align-items: center; text-decoration: none; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--canvas); }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+button { color: inherit; }
+:focus-visible { outline: 3px solid rgba(49, 79, 68, .45); outline-offset: 3px; }
+
+.app-shell { min-height: 100vh; }
+.main-content { min-height: 100vh; }
+.topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.92); }
+.topbar p { margin: 0; color: var(--muted); font-size: 13px; }
+.topbar-actions { display: flex; align-items: center; gap: 14px; }
+.text-button { border: 0; background: transparent; color: var(--purple-strong); font-weight: 700; text-decoration: none; cursor: pointer; }
+.text-button span { display: inline-grid; place-items: center; min-width: 22px; height: 22px; margin-left: 4px; border-radius: 50%; color: #fff; background: var(--purple); font-size: 11px; }
+
+.hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, .recommendation-learning, footer { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
+.hero { padding: 52px 0 24px; }
+.eyebrow, .section-kicker, .dialog-kicker, .panel-heading span { color: var(--purple-strong); font-size: 11px; font-weight: 850; letter-spacing: .13em; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: end; }
+h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-height: .98; letter-spacing: -.055em; font-weight: 720; }
+.hero-copy { max-width: 760px; margin: 22px 0 0; color: #555766; font-size: 16px; line-height: 1.6; }
+.interest-card { padding: 22px; border-left: 4px solid var(--purple); background: #fff; box-shadow: 0 6px 24px rgba(15, 31, 25, .06); }
+.interest-card span { display: block; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.interest-card strong { display: block; margin-top: 7px; font-size: 17px; }
+.interest-card p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.interest-card button { border: 0; padding: 0; color: var(--purple-strong); background: transparent; font-size: 13px; font-weight: 750; cursor: pointer; }
+
+.directory { padding: 30px; background: #fff; border: 1px solid var(--line); }
+.directory-tabs { display: flex; border-bottom: 1px solid var(--line); margin: -12px 0 30px; }
+.directory-tab { padding: 12px 18px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); font-size: 14px; font-weight: 750; cursor: pointer; }
+.directory-tab.active { color: var(--purple-strong); border-bottom-color: var(--purple); }
+.directory-header { display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+.directory-header h2 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -.035em; line-height: 1.1; }
+.directory-header a { color: var(--purple-strong); font-weight: 750; font-size: 13px; }
+.search-panel { display: flex; gap: 12px; margin-top: 28px; }
+.search-box { flex: 1; min-height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border: 2px solid var(--purple); background: #fff; }
+.search-box span { color: var(--purple); font-size: 25px; }
+.search-box input { flex: 1; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; }
+.search-box kbd { padding: 3px 8px; border: 1px solid var(--line); border-bottom-width: 2px; color: var(--muted); background: #f8f8fa; font-size: 11px; }
+.primary-button, .secondary-button { min-height: 42px; padding: 0 17px; border: 1px solid var(--navy); font-weight: 750; cursor: pointer; }
+.primary-button { color: #fff; background: var(--navy); }
+.primary-button:hover { background: var(--purple-strong); border-color: var(--purple-strong); }
+.secondary-button { color: var(--ink); background: #fff; border-color: var(--line); }
+.secondary-button:hover { border-color: var(--purple); color: var(--purple-strong); }
+.filter-section { display: grid; grid-template-columns: 126px 1fr; gap: 14px; align-items: center; margin-top: 22px; }
+.filter-section.compact { margin-top: 12px; }
+.filter-label { color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .07em; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-chip { min-height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; color: #484a58; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
+.filter-chip:hover { border-color: #a9a4ef; }
+.filter-chip.active { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
+.results-toolbar { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+.results-toolbar p { margin: 0; color: var(--muted); font-size: 13px; }
+.results-toolbar p strong { color: var(--ink); }
+.affiliation-results-toolbar { justify-content: flex-start; }
+.results-toolbar label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+.results-toolbar select { min-height: 38px; padding: 0 32px 0 10px; border: 1px solid var(--line); color: var(--ink); background: #fff; }
+
+.people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.person-card { position: relative; display: flex; flex-direction: column; min-height: 338px; padding: 20px; border: 1px solid var(--line); background: #fff; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.person-card:hover { transform: translateY(-2px); border-color: #b6b1ee; box-shadow: 0 12px 28px rgba(38, 34, 96, .08); }
+.person-card.selected { border: 2px solid var(--purple); padding: 19px; }
+.select-person { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer; }
+.person-card.selected .select-person { color: #fff; border-color: var(--purple); background: var(--purple); }
+.person-head { display: flex; gap: 14px; align-items: center; padding-right: 34px; }
+.avatar { flex: 0 0 auto; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--avatar, var(--purple)); font-size: 17px; font-weight: 820; }
+.person-name { margin: 0; font-size: 19px; letter-spacing: -.02em; }
+.affiliation { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.role-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.tag { padding: 5px 8px; border-radius: 4px; background: #f0f0f5; color: #555765; font-size: 10px; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+.tag.role { color: var(--green); background: var(--green-soft); }
+.why-card { margin-top: 14px; padding: 13px; border-left: 3px solid var(--purple); background: #eef3f0; }
+.why-card span { display: block; color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+.why-card p { margin: 6px 0 0; color: #414250; font-size: 13px; line-height: 1.45; }
+.touchpoint { display: flex; gap: 8px; align-items: start; margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.touchpoint b { color: var(--ink); }
+.person-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
+.person-actions button { flex: 1; }
+.person-actions .save-quick.saved { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
+
+.affiliation-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; margin-top: 18px; }
+.affiliation-card { padding: 22px; border: 1px solid var(--line); background: #fff; }
+.affiliation-card h3 { margin: 0; font-size: 20px; }
+.affiliation-card p { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.affiliation-card button { padding: 0; border: 0; color: var(--purple-strong); background: transparent; font-weight: 750; cursor: pointer; }
+.empty-state { padding: 54px; margin-top: 18px; text-align: center; border: 1px dashed #bbbcc8; background: #f9f9fc; }
+.empty-state h3 { margin: 0; }
+.empty-state p { color: var(--muted); }
+
+.recommendation-hero { padding: 68px 0 36px; }
+.recommendation-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: end; margin-top: 18px; }
+.recommendation-hero h1 { max-width: 690px; font-size: clamp(38px, 4vw, 56px); line-height: 1.02; }
+
+.recommendation-controls { padding: 30px; border: 1px solid var(--line); background: #fff; }
+.recommendation-controls h2, .recommendation-section h2, .recommendation-learning h2 { margin: 7px 0 0; font-size: clamp(24px, 2.3vw, 34px); line-height: 1.1; letter-spacing: -.035em; }
+.recommendation-lenses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; }
+.recommendation-lens { min-height: 124px; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; gap: 5px 12px; padding: 17px; border: 1px solid var(--line); background: #fff; text-align: left; cursor: pointer; }
+.recommendation-lens:hover { border-color: #aaa5ed; }
+.recommendation-lens.active { border: 2px solid var(--purple); padding: 16px; background: var(--purple-soft); }
+.recommendation-lens span { grid-row: 1 / 3; color: var(--purple); font-size: 11px; font-weight: 850; }
+.recommendation-lens b { align-self: end; font-size: 15px; }
+.recommendation-lens small { color: var(--muted); line-height: 1.45; }
+.recommendation-status { margin: 18px 0 0; color: var(--muted); font-size: 12px; }
+.recommendation-filter-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 12px; align-items: end; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+.recommendation-filter-bar label { display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
+.recommendation-filter-bar select { width: 100%; min-height: 44px; padding: 0 34px 0 12px; border: 1px solid var(--line); color: var(--ink); background: #fff; text-transform: none; letter-spacing: 0; }
+.recommendation-filter-bar button { min-height: 44px; }
+
+.recommendation-section { padding: 62px 0 0; }
+.recommendation-section + .recommendation-section { padding-top: 70px; }
+.recommendation-section-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+.recommendation-section-head h2 { max-width: 700px; }
+.recommendation-section-head > a { color: var(--purple-strong); font-size: 13px; font-weight: 750; }
+.recommendation-stay-note { margin: 0; color: var(--muted); font-size: 12px; }
+.recommended-people-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 26px; }
+.recommendation-person-card { display: flex; flex-direction: column; min-height: 430px; padding: 22px; border: 1px solid var(--line); background: #fff; }
+.recommendation-person-card .person-head { padding-right: 0; }
+.recommendation-reason { margin-top: 18px; padding: 14px; border-left: 3px solid var(--purple); background: #eef3f0; }
+.recommendation-reason > span { color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+.recommendation-reason p { margin: 7px 0 0; color: #444653; font-size: 13px; line-height: 1.52; }
+.bridge-line { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; margin-top: 14px; color: var(--muted); font-size: 11px; }
+.bridge-line b { padding: 5px 8px; border: 1px solid var(--line); background: #fafafd; color: var(--ink); }
+.recommendation-person-card .touchpoint { padding-top: 12px; border-top: 1px solid var(--line); }
+.recommendation-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; padding-top: 16px; }
+.recommendation-actions button { min-height: 40px; border: 1px solid var(--line); background: #fff; font-size: 11px; font-weight: 750; cursor: pointer; }
+.recommendation-actions button:hover { border-color: var(--purple); color: var(--purple-strong); }
+.recommendation-actions .primary-button { color: #fff; border-color: var(--navy); background: var(--navy); }
+.recommendation-actions .primary-button:hover { color: #fff; background: var(--purple-strong); }
+.recommendation-actions .saved-action, .recommendation-actions .liked-action { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
+.recommendation-person-card.liked, .content-recommendation-card.liked { border-color: #8fa89c; box-shadow: inset 0 3px 0 var(--purple); }
+.recommendation-empty { grid-column: 1 / -1; padding: 32px; border: 1px dashed #bbbcc8; background: #f9f9fc; color: var(--muted); text-align: center; }
+
+.recommended-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 26px; }
+.content-recommendation-card { display: flex; flex-direction: column; min-height: 280px; padding: 22px; border: 1px solid var(--line); background: #fff; }
+.content-type-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.content-type { padding: 6px 9px; color: #fff; background: var(--purple); font-size: 10px; font-weight: 850; letter-spacing: .08em; }
+.content-type.session { background: var(--green); }
+.content-type.talk { background: var(--orange); }
+.content-lens { color: var(--muted); font-size: 11px; font-weight: 700; }
+.content-recommendation-card h3 { margin: 20px 0 7px; font-size: 21px; line-height: 1.25; letter-spacing: -.02em; }
+.content-title-button { padding: 0; border: 0; color: inherit; background: transparent; font-size: inherit; font-weight: 760; line-height: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
+.content-title-button:hover { color: var(--purple-strong); text-decoration: underline; text-underline-offset: 4px; }
+.content-authors { margin: 0; color: var(--ink); font-size: 12px; font-weight: 750; }
+.content-description { margin: 16px 0 0; color: #555766; font-size: 13px; line-height: 1.55; }
+.content-recommendation-card .content-meta { margin: 0; color: var(--muted); font-size: 12px; }
+.content-recommendation-card .content-why { margin: 18px 0; padding: 12px; background: #eef3f0; color: #474856; font-size: 13px; line-height: 1.5; }
+.content-recommendation-card .recommendation-actions { margin-top: auto; grid-template-columns: 1fr 1fr; }
+.content-drawer-head { align-items: flex-start; }
+.content-drawer-head .content-type { flex: 0 0 auto; margin-top: 5px; }
+.content-resources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; padding-top: 14px; border-top: 1px solid var(--line); }
+.content-resources span { padding: 6px 8px; font-size: 10px; font-weight: 750; }
+.content-resources .available { color: var(--green); background: var(--green-soft); }
+.content-resources .unavailable { color: #757783; background: #eeeef2; }
+
+.content-detail-page { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 34px 0 74px; }
+.detail-back { padding: 0; border: 0; color: var(--purple-strong); background: transparent; font-weight: 750; cursor: pointer; }
+.detail-hero { margin-top: 30px; padding: 42px; border: 1px solid var(--line); background: #fff; }
+.detail-hero h1 { max-width: 940px; margin-top: 22px; font-size: clamp(38px, 4.2vw, 58px); }
+.detail-authors { margin: 25px 0 0; font-size: 16px; font-weight: 780; }
+.detail-meta { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+.detail-reason { max-width: 760px; margin-top: 24px; padding: 17px; border-left: 4px solid var(--purple); background: var(--purple-soft); }
+.detail-reason span { color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+.detail-reason p { margin: 8px 0 0; color: #444653; font-size: 14px; line-height: 1.6; }
+.detail-primary-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.saved-action { color: var(--purple-strong) !important; border-color: var(--purple) !important; background: var(--purple-soft) !important; }
+.research-materials { margin-top: 24px; padding: 34px; color: #fff; background: var(--navy); }
+.detail-section-heading h2, .detail-body-grid h2, .detail-related h2 { margin: 7px 0 0; font-size: clamp(24px, 2.3vw, 34px); letter-spacing: -.035em; line-height: 1.1; }
+.research-materials .section-kicker { color: #aaa5ff; }
+.research-materials h2 { color: #fff; }
+.material-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 26px; }
+.material-card { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; min-height: 220px; padding: 24px; color: var(--ink); background: #fff; }
+.material-icon { width: 48px; height: 48px; display: grid; place-items: center; color: #fff; background: var(--purple); font-size: 19px; }
+.material-card span { color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .1em; }
+.material-card h3 { margin: 7px 0 8px; font-size: 22px; }
+.material-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.material-card button { grid-column: 1 / -1; align-self: end; width: 100%; }
+.material-card.unavailable-card { color: #777986; background: #e8e8ee; }
+.material-card.unavailable-card .material-icon { background: #8c8e9a; }
+.material-card button:disabled { border-color: #bcbec7; color: #747682; background: #d5d6dd; cursor: not-allowed; }
+.detail-body-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 18px; margin-top: 24px; }
+.detail-copy, .session-summary { padding: 30px; border: 1px solid var(--line); background: #fff; }
+.detail-copy > p:not(.section-kicker), .session-summary > p:not(.section-kicker) { color: var(--muted); font-size: 14px; line-height: 1.7; }
+.session-summary { border-top: 4px solid var(--green); background: var(--green-soft); }
+.detail-sessions { margin-top: 24px; padding: 34px; border: 1px solid var(--line); background: #fff; }
+.detail-session-list { display: grid; gap: 12px; margin-top: 24px; }
+.detail-session-card { border: 1px solid var(--line); background: #fff; }
+.detail-session-card.open { border-color: var(--purple); box-shadow: inset 4px 0 0 var(--purple); }
+.session-open { width: 100%; display: grid; grid-template-columns: 118px 1fr auto; gap: 16px; align-items: center; padding: 18px 20px; border: 0; background: transparent; text-align: left; cursor: pointer; }
+.session-day { color: var(--green); font-size: 11px; font-weight: 850; letter-spacing: .04em; }
+.session-open b, .session-open small { display: block; }
+.session-open b { font-size: 17px; }
+.session-open small { margin-top: 5px; color: var(--muted); font-size: 12px; }
+.session-open i { color: var(--purple-strong); font-size: 12px; font-style: normal; font-weight: 750; }
+.session-expanded { padding: 0 20px 20px 154px; }
+.session-expanded dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 18px; }
+.session-expanded dl div { padding: 13px; background: #eef3f0; }
+.session-expanded dt { color: var(--purple-strong); font-size: 9px; font-weight: 850; letter-spacing: .1em; }
+.session-expanded dd { margin: 5px 0 0; color: #494b5a; font-size: 12px; line-height: 1.45; }
+.detail-copy, .session-card { padding: 34px; border: 1px solid var(--line); background: #fff; }
+.detail-copy > p:not(.section-kicker), .session-card > p:not(.section-kicker) { color: #555766; font-size: 14px; line-height: 1.75; }
+.session-card { border-top: 4px solid var(--green); }
+.session-card button { width: 100%; margin-top: 18px; }
+.detail-related { margin-top: 24px; padding: 34px; border: 1px solid var(--line); background: #fff; }
+.detail-related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; }
+.related-person { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 16px; border: 1px solid var(--line); background: #fff; text-align: left; cursor: pointer; }
+.related-person:hover { border-color: var(--purple); }
+.related-person .avatar { width: 46px; height: 46px; font-size: 13px; }
+.related-person b, .related-person small { display: block; }
+.related-person small { margin-top: 3px; color: var(--muted); }
+.related-person i { grid-column: 2; color: var(--purple-strong); font-size: 11px; font-style: normal; font-weight: 750; }
+
+.recommendation-learning { display: grid; grid-template-columns: 1.2fr .8fr; gap: 70px; align-items: end; margin-top: 70px; margin-bottom: 70px; padding: 38px; color: #fff; background: var(--navy); }
+.recommendation-learning span { color: #a9a4ff; font-size: 10px; font-weight: 850; letter-spacing: .13em; }
+.recommendation-learning h2 { color: #fff; }
+.recommendation-learning > p { margin: 0; color: #c9c9d6; font-size: 14px; line-height: 1.7; }
+
+footer { display: flex; justify-content: space-between; gap: 20px; padding: 24px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+footer p { margin: 0; }
+footer div { display: flex; flex-wrap: wrap; gap: 16px; }
+footer a { color: var(--purple-strong); font-weight: 700; }
+
+.drawer-backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(17,17,31,.35); backdrop-filter: blur(2px); }
+.profile-drawer, .saved-panel { position: fixed; inset: 0 0 0 auto; z-index: 70; width: min(520px, 100%); padding: 32px; overflow-y: auto; background: #fff; box-shadow: var(--shadow); transform: translateX(105%); transition: transform .25s ease; }
+.profile-drawer.open, .saved-panel.open { transform: translateX(0); }
+.close-button { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: #fff; font-size: 24px; cursor: pointer; }
+.profile-drawer > .close-button { margin-left: auto; }
+.drawer-profile-head { display: flex; gap: 16px; align-items: center; margin-top: 24px; }
+.drawer-profile-head .avatar { width: 72px; height: 72px; font-size: 21px; }
+.drawer-profile-head h2 { margin: 0; font-size: 28px; letter-spacing: -.035em; }
+.drawer-section { padding: 22px 0; border-top: 1px solid var(--line); }
+.drawer-section:first-of-type { margin-top: 24px; }
+.drawer-section > span { color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .11em; }
+.drawer-section h3 { margin: 7px 0 12px; font-size: 18px; }
+.drawer-section p, .drawer-section li { color: #555766; font-size: 13px; line-height: 1.6; }
+.drawer-section ul { padding-left: 18px; }
+.drawer-network { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 14px; }
+.network-node { padding: 12px 8px; border: 1px solid var(--line); background: #fafafd; text-align: center; font-size: 11px; font-weight: 750; }
+.drawer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 28px; }
+.drawer-actions a, .drawer-actions button { min-height: 46px; display: grid; place-items: center; text-decoration: none; }
+
+.saved-panel { z-index: 80; background: #fbfbfe; }
+.panel-heading { display: flex; justify-content: space-between; align-items: start; }
+.panel-heading h2 { margin: 6px 0 0; font-size: 28px; letter-spacing: -.035em; }
+.panel-intro { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.saved-item { padding: 18px; margin-top: 12px; border: 1px solid var(--line); background: #fff; }
+.saved-item-head { display: flex; justify-content: space-between; gap: 12px; }
+.saved-item h3 { margin: 0; font-size: 16px; }
+.saved-item button { border: 0; color: #a13a3a; background: transparent; cursor: pointer; }
+.saved-meta { display: grid; gap: 7px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+.saved-meta b { color: var(--ink); }
+.saved-note { padding: 10px; margin-top: 10px; background: #eef3f0; color: #454653; font-size: 12px; line-height: 1.5; }
+.saved-empty { padding: 32px 20px; margin-top: 24px; border: 1px dashed #bdbeca; text-align: center; color: var(--muted); }
+
+.save-dialog { width: min(640px, calc(100% - 28px)); max-height: calc(100vh - 28px); padding: 0; border: 0; color: var(--ink); box-shadow: var(--shadow); }
+.save-dialog::backdrop { background: rgba(17,17,31,.55); backdrop-filter: blur(3px); }
+.save-dialog form { position: relative; padding: 34px; }
+.save-dialog .close-button { position: absolute; top: 24px; right: 24px; }
+.save-dialog h2 { margin: 8px 0 6px; font-size: 28px; }
+.save-dialog > form > p { margin: 0; color: var(--muted); }
+.save-dialog fieldset { padding: 0; margin: 24px 0 0; border: 0; }
+.save-dialog legend, .note-field { display: block; margin-bottom: 10px; font-size: 13px; font-weight: 780; }
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.choice-option input { position: absolute; opacity: 0; pointer-events: none; }
+.choice-option span { min-height: 44px; display: flex; align-items: center; padding: 10px 12px; border: 1px solid var(--line); color: #4d4f5b; font-size: 12px; cursor: pointer; }
+.choice-option input:checked + span { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
+.save-dialog select, .save-dialog textarea { width: 100%; border: 1px solid var(--line); background: #fff; }
+.save-dialog select { min-height: 46px; padding: 0 12px; }
+.note-field { margin-top: 22px; }
+.note-field textarea { display: block; margin-top: 10px; padding: 12px; resize: vertical; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+.interest-dialog { width: min(900px, calc(100% - 28px)); min-height: min(600px, calc(100vh - 28px)); overflow-y: auto; }
+.interest-dialog form { padding-block: 26px; }
+.interest-dialog fieldset { margin-top: 18px; }
+.interest-dialog .dialog-actions { position: sticky; bottom: 0; z-index: 2; padding: 14px 0 2px; margin-top: 16px; background: #fff; box-shadow: 0 -10px 18px rgba(255,255,255,.94); }
+.interest-dialog input[type="text"] { width: 100%; min-height: 46px; padding: 0 12px; border: 1px solid var(--line); color: var(--ink); background: #fff; }
+.interest-custom-field { display: grid; gap: 8px; margin-top: 12px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.fieldset-help { margin: -2px 0 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.interest-dropdown { position: relative; }
+.interest-dropdown-trigger { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 14px; border: 1px solid #c9cad2; color: var(--ink); background: #f2f2f3; text-align: left; font: inherit; cursor: pointer; }
+.interest-dropdown-trigger span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.interest-dropdown-trigger i { font-style: normal; font-size: 20px; transition: transform .18s ease; }
+.interest-dropdown-trigger[aria-expanded="true"] { border-color: #aaa5ed; outline: 3px solid rgba(80,72,216,.18); }
+.interest-dropdown-trigger[aria-expanded="true"] i { transform: rotate(180deg); }
+.interest-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 20; max-height: 260px; overflow-y: auto; padding: 8px 0; border: 1px solid #bfc0c5; border-radius: 12px; background: #e6e6e6; box-shadow: 0 16px 32px rgba(17,17,31,.22); }
+.interest-menu-option { position: relative; display: block; }
+.interest-menu-option input { position: absolute; opacity: 0; pointer-events: none; }
+.interest-menu-option span { min-height: 46px; display: flex; align-items: center; gap: 10px; padding: 8px 18px; color: #27272b; background: transparent; cursor: pointer; }
+.interest-menu-option span::before { content: ""; flex: 0 0 18px; width: 18px; text-align: center; font-size: 18px; font-weight: 800; }
+.interest-menu-option:hover span { background: #d8d8d8; }
+.interest-menu-option input:focus-visible + span { outline: 3px solid rgba(80,72,216,.22); outline-offset: -3px; }
+.interest-menu-option input:checked + span::before { content: "✓"; }
+.interest-menu-option input:disabled + span { color: #999aa2; background: #ededed; cursor: not-allowed; }
+.interest-menu-done { position: sticky; bottom: -8px; width: 100%; min-height: 44px; border: 0; border-top: 1px solid #c8c8c8; color: var(--ink); background: #f5f5f5; font-weight: 800; cursor: pointer; }
+.interest-menu-done:hover { background: #fff; }
+.custom-interest-entry { display: grid; gap: 8px; margin-top: 16px; }
+.custom-interest-entry > label { color: var(--ink); font-size: 13px; font-weight: 780; }
+.custom-interest-entry > div { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.custom-interest-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.custom-interest-tag { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 8px 6px 11px; border: 1px solid #aaa5ed; border-radius: 999px; color: var(--purple-strong); background: var(--purple-soft); font-size: 12px; font-weight: 700; }
+.custom-interest-tag button { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; color: var(--purple-strong); background: rgba(80,72,216,.1); cursor: pointer; }
+
+.compare-bar { position: fixed; left: calc(274px + 50%); bottom: 22px; z-index: 50; transform: translateX(-50%); min-width: 520px; display: flex; align-items: center; gap: 14px; padding: 12px 14px; color: #fff; background: var(--navy); box-shadow: var(--shadow); }
+.compare-bar p { margin: 0 auto 0 0; font-size: 13px; }
+.compare-bar > button:not(.primary-button) { border: 0; color: #cbcbd7; background: transparent; cursor: pointer; }
+.compare-bar .primary-button { border-color: #fff; }
+.toast { position: fixed; right: 24px; bottom: 24px; z-index: 110; max-width: 360px; padding: 14px 18px; color: #fff; background: var(--navy); box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translateY(12px); transition: .2s ease; font-size: 13px; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 1050px) {
+  .sidebar { position: static; width: 100%; min-height: auto; padding-bottom: 10px; }
+  .brand-block { border-bottom: 0; }
+  .primary-nav, .secondary-nav { display: flex; overflow-x: auto; padding: 6px 0; }
+  .primary-nav a, .secondary-nav a, .nav-item { flex: 0 0 auto; width: auto; min-height: 40px; border-left: 0; border-bottom: 3px solid transparent; }
+  .nav-item.active { border-bottom-color: var(--purple); }
+  .nav-separator, .sidebar-note { display: none; }
+  .main-content { margin-left: 0; }
+  .compare-bar { left: 50%; }
+}
+
+@media (max-width: 760px) {
+  .topbar { padding: 0 18px; }
+  .topbar p { display: none; }
+  .topbar-actions { margin-left: auto; }
+  .hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, .recommendation-learning, footer { width: min(100% - 28px, 1180px); }
+  .hero { padding-top: 44px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+  .recommendation-hero-grid, .recommendation-learning { grid-template-columns: 1fr; gap: 26px; }
+  .recommendation-hero-grid > *, .recommendation-section-head > * { min-width: 0; }
+  .recommendation-lenses, .recommended-people-grid, .recommended-content-grid, .recommendation-filter-bar, .material-grid, .detail-body-grid, .detail-related-grid { grid-template-columns: 1fr; }
+  .recommendation-section-head { align-items: start; flex-direction: column; }
+  .content-recommendation-card .recommendation-actions { grid-template-columns: 1fr; }
+  .content-detail-page { width: min(100% - 28px, 1180px); }
+  .detail-hero, .research-materials, .detail-copy, .session-summary, .detail-sessions, .detail-related { padding: 24px 18px; }
+  .session-open { grid-template-columns: 1fr; }
+  .session-open i { margin-top: 6px; }
+  .session-expanded { padding: 0 16px 18px; }
+  .session-expanded dl { grid-template-columns: 1fr; }
+  h1 { font-size: 38px; overflow-wrap: anywhere; }
+  .directory { padding: 22px 16px; }
+  .directory-header, .results-toolbar, footer { align-items: start; flex-direction: column; }
+  .search-panel { flex-direction: column; }
+  .filter-section { grid-template-columns: 1fr; gap: 8px; }
+  .people-grid, .affiliation-grid { grid-template-columns: 1fr; }
+  .choice-grid { grid-template-columns: 1fr; }
+  .custom-interest-entry > div { grid-template-columns: 1fr; }
+  .compare-bar { width: calc(100% - 24px); min-width: 0; bottom: 12px; }
+  .compare-bar .primary-button { padding-inline: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+
+</style>
+  </head>
+  <body data-page="people">
+    <script src="../shared/shell.js"></script>
+    <div class="app-shell">
+
+      <main class="main-content" id="main" tabindex="-1">
+        <header class="topbar">
+          <p>Conference time zone · Pittsburgh (UTC −04:00)</p>
+          <div class="topbar-actions">
+            <button id="showSavedTop" class="text-button" type="button">Saved people <span id="savedCountTop">0</span></button>
+          </div>
+        </header>
+
+        <div id="peopleView">
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-grid">
+            <div>
+              <h1 id="page-title">Who should I know at CHI 2027?</h1>
+              <p class="hero-copy">
+                Find people across adjacent fields—not only people who use the same keywords. See why each person may
+                matter to your work, where you may encounter them, and what you want to do next.
+              </p>
+            </div>
+            <div class="interest-card">
+              <span>Your starting point</span>
+              <strong id="startingPointValue">Human-AI Interaction</strong>
+              <p id="exploreInterestsCopy">Looking beyond your field: Accessibility, Design Tools and Critical Design.</p>
+              <button id="editInterests" type="button" aria-haspopup="dialog">Edit interests</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="directory" aria-labelledby="directory-title">
+          <div class="directory-tabs" role="tablist" aria-label="Directory type">
+            <button id="peopleTab" class="directory-tab active" role="tab" aria-selected="true" type="button">People</button>
+            <button id="affiliationsTab" class="directory-tab" role="tab" aria-selected="false" type="button">Affiliations</button>
+          </div>
+
+          <div class="directory-header">
+            <div>
+              <h2 id="directory-title">People related to your interests</h2>
+            </div>
+          </div>
+
+          <div id="peopleSearchPanel" class="search-panel">
+            <label class="search-box" for="searchInput">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Search a person, institution, topic or method" autocomplete="off" />
+              <kbd>/</kbd>
+            </label>
+            <button id="clearFilters" class="secondary-button" type="button">Clear filters</button>
+          </div>
+
+          <div id="affiliationSearchPanel" class="search-panel" hidden>
+            <label class="search-box" for="affiliationSearchInput">
+              <span aria-hidden="true">⌕</span>
+              <input id="affiliationSearchInput" type="search" placeholder="Search an institution or research community" autocomplete="off" />
+              <kbd>/</kbd>
+            </label>
+            <button id="clearAffiliationSearch" class="secondary-button" type="button">Clear search</button>
+          </div>
+
+          <div class="filter-section">
+            <span class="filter-label">Explore across</span>
+            <div id="topicFilters" class="filter-row" aria-label="Topic filters"></div>
+          </div>
+          <div class="filter-section compact">
+            <span class="filter-label">Relationship</span>
+            <div id="relationFilters" class="filter-row" aria-label="Relationship filters"></div>
+          </div>
+
+          <div class="results-toolbar">
+            <p id="resultSummary" aria-live="polite"></p>
+            <label>Sort
+              <select id="sortSelect">
+                <option value="relevance">Why relevant to me</option>
+                <option value="session">Next conference touchpoint</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="affiliationResultsToolbar" class="results-toolbar affiliation-results-toolbar" hidden>
+            <p id="affiliationSummary" aria-live="polite"></p>
+          </div>
+
+          <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
+          <div id="affiliationGrid" class="affiliation-grid" aria-live="polite" hidden></div>
+          <div id="affiliationEmptyState" class="empty-state" hidden>
+            <h3>No matching affiliation yet</h3>
+            <p>Try an institution name or a research topic such as Accessibility or Learning Technologies.</p>
+          </div>
+          <div id="emptyState" class="empty-state" hidden>
+            <h3>No exact match yet</h3>
+            <p>Try a neighboring topic or clear one of your relationship filters.</p>
+          </div>
+        </section>
+
+        </div>
+
+        <div id="recommendationsView" hidden>
+          <section class="recommendation-hero" aria-labelledby="recommendations-title">
+            <div class="eyebrow">PERSONALIZED DISCOVERY · EXPLAINABLE RECOMMENDATIONS</div>
+            <div class="recommendation-hero-grid">
+              <div>
+                <h1 id="recommendations-title">Recommendations with reasons.</h1>
+                <p class="hero-copy">
+                  Discover people, papers and sessions outside your immediate field—while seeing the exact bridge
+                  between each recommendation and your <span id="recommendationsInterestText">Human-AI Interaction</span> interests.
+                </p>
+              </div>
+              <aside class="interest-card" aria-label="Recommendation interests">
+                <span>Your starting point</span>
+                <strong id="recommendationPrimaryInterest">Human-AI Interaction</strong>
+                <p id="recommendationExploreCopy">Looking beyond your field: Accessibility, Design Tools and Critical Design.</p>
+                <button id="editRecommendationInterests" type="button" aria-haspopup="dialog">Edit interests</button>
+              </aside>
+            </div>
+          </section>
+
+          <section class="recommendation-controls" aria-labelledby="recommendation-controls-title">
+            <div>
+              <p id="recommendation-controls-title" class="section-kicker">CHOOSE HOW TO DISCOVER</p>
+            </div>
+            <div id="recommendationCategories" class="recommendation-lenses" aria-label="Recommendation categories">
+              <button class="recommendation-lens active" type="button" data-category="Trending"><span>01</span><b>Trending</b><small>What the CHI community is paying attention to now</small></button>
+              <button class="recommendation-lens" type="button" data-category="Explore by Topic"><span>02</span><b>Explore by Topic</b><small>Browse research areas intentionally</small></button>
+              <button class="recommendation-lens" type="button" data-category="Related to My Interests"><span>03</span><b>Related to My Interests</b><small>Explainable matches to your selected interests</small></button>
+            </div>
+            <div class="recommendation-filter-bar" aria-label="Recommendation filters">
+              <label>Research topic<select id="recommendationTopic"><option>All topics</option><option>Human-AI Interaction</option><option>Accessibility</option><option>Critical Design</option><option>Learning Technologies</option><option>Social Computing</option></select></label>
+              <label>Content type<select id="recommendationType"><option>All types</option><option>Paper</option><option>Session</option><option>Talk</option></select></label>
+              <label>Date<select id="recommendationDate"><option>All dates</option><option>Mon 10 May</option><option>Tue 11 May</option><option>Wed 12 May</option></select></label>
+              <button id="clearRecommendationFilters" class="secondary-button" type="button">Clear filters</button>
+            </div>
+            <p id="recommendationStatus" class="recommendation-status" aria-live="polite"></p>
+          </section>
+
+          <section class="recommendation-section recommendation-content-section" aria-labelledby="papers-sessions-title">
+            <div class="recommendation-section-head">
+              <div><p id="papers-sessions-title" class="section-kicker">PAPERS, TALKS & SESSIONS</p></div>
+              <button id="resetRecommendationFeedback" class="secondary-button" type="button">Reset feedback</button>
+            </div>
+            <div id="recommendedContentGrid" class="recommended-content-grid"></div>
+          </section>
+
+          <section class="recommendation-section" aria-labelledby="people-to-meet-title">
+            <div class="recommendation-section-head">
+              <div><p id="people-to-meet-title" class="section-kicker">RELATED PEOPLE</p></div>
+              <p class="recommendation-stay-note">People remain connected to topics and sessions</p>
+            </div>
+            <div id="recommendedPeopleGrid" class="recommended-people-grid"></div>
+          </section>
+
+          <section class="recommendation-learning" aria-labelledby="recommendation-learning-title">
+            <div><span>FEEDBACK LOOP</span><h2 id="recommendation-learning-title">The system should learn without becoming a black box.</h2></div>
+            <p>“More like this” strengthens the visible recommendation lens. “Not relevant” removes an item and explains what changed. You stay in control of the recommendation logic.</p>
+          </section>
+        </div>
+
+        <div id="contentDetailView" hidden>
+          <section id="contentDetail" class="content-detail-page" aria-live="polite"></section>
+        </div>
+
+        <footer>
+          <p>Concept prototype · Example people for interaction testing; their papers are in the Program.</p>
+          <div>
+            <a href="../program/">Program</a>
+            <a href="../map/">Map</a>
+            <a href="../my/">My</a>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+    <aside id="profileDrawer" class="profile-drawer" aria-labelledby="drawerName" aria-hidden="true">
+      <button id="closeDrawer" class="close-button" type="button" aria-label="Close details">×</button>
+      <div id="drawerContent"></div>
+    </aside>
+
+    <aside id="savedPanel" class="saved-panel" aria-labelledby="savedPanelTitle" aria-hidden="true">
+      <div class="panel-heading">
+        <div><span>MY PEOPLE</span><h2 id="savedPanelTitle">Saved with intention</h2></div>
+        <button id="closeSaved" class="close-button" type="button" aria-label="Close saved people">×</button>
+      </div>
+      <p class="panel-intro">Remember why you saved someone and what you want to do after the conference moment.</p>
+      <div id="savedList"></div>
+    </aside>
+
+    <dialog id="interestDialog" class="save-dialog interest-dialog">
+      <form id="interestForm" method="dialog">
+        <button id="closeInterestDialog" class="close-button" type="button" aria-label="Close interests dialog">×</button>
+        <span class="dialog-kicker">YOUR RESEARCH INTERESTS</span>
+        <h2>Personalize discovery</h2>
+        <p>Choose your current direction and the areas you want CHI to help you explore. You can change these at any time.</p>
+
+        <fieldset>
+          <legend>Your main research direction</legend>
+          <p class="fieldset-help">Select one direction as your current starting point.</p>
+          <div class="interest-dropdown">
+            <button id="primaryInterestTrigger" class="interest-dropdown-trigger" type="button" aria-expanded="false" aria-controls="primaryInterestOptions">
+              <span id="primaryInterestTriggerText">Choose a direction</span><i aria-hidden="true">⌄</i>
+            </button>
+            <div id="primaryInterestOptions" class="interest-dropdown-menu" role="radiogroup" aria-label="Your main research direction" hidden></div>
+          </div>
+          <label id="customPrimaryField" class="interest-custom-field" hidden>Enter your direction
+            <input id="customPrimaryInterest" type="text" maxlength="60" placeholder="Example: AI for creative practice" />
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Directions you want to explore</legend>
+          <p class="fieldset-help">Select any that interest you, then add your own if it is not listed.</p>
+          <div class="interest-dropdown">
+            <button id="exploreInterestTrigger" class="interest-dropdown-trigger" type="button" aria-expanded="false" aria-controls="exploreInterestOptions">
+              <span id="exploreInterestTriggerText">Choose directions</span><i aria-hidden="true">⌄</i>
+            </button>
+            <div id="exploreInterestOptions" class="interest-dropdown-menu" role="group" aria-label="Directions you want to explore" hidden></div>
+          </div>
+          <div class="custom-interest-entry">
+            <label for="customExploreInput">Add another direction</label>
+            <div>
+              <input id="customExploreInput" type="text" maxlength="60" placeholder="Type a research direction" />
+              <button id="addCustomExplore" class="secondary-button" type="button">Add</button>
+            </div>
+          </div>
+          <div id="customExploreList" class="custom-interest-list" aria-live="polite"></div>
+        </fieldset>
+
+        <div class="dialog-actions">
+          <button id="cancelInterestEdit" class="secondary-button" type="button">Cancel</button>
+          <button class="primary-button" type="submit">Save interests</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="saveDialog" class="save-dialog">
+      <form id="saveForm" method="dialog">
+        <button id="closeSaveDialog" class="close-button" type="button" aria-label="Close save dialog">×</button>
+        <span class="dialog-kicker">SAVE WITH INTENTION</span>
+        <h2 id="saveDialogTitle">Save this person</h2>
+        <p>Give this connection enough context to be useful later.</p>
+
+        <fieldset>
+          <legend>Why are you saving them?</legend>
+          <div id="intentionOptions" class="choice-grid"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Where did you notice them? <small>(optional)</small></legend>
+          <select id="contextSelect">
+            <option value="">Not sure yet</option>
+            <option>Paper presentation</option>
+            <option>Poster session</option>
+            <option>Workshop</option>
+            <option>Recommendation</option>
+            <option>Shared research topic</option>
+          </select>
+        </fieldset>
+        <label class="note-field">Private note
+          <textarea id="privateNote" rows="3" placeholder="Example: Ask how their accessibility framework might change my HAI study."></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button id="cancelSave" class="secondary-button" type="button">Cancel</button>
+          <button class="primary-button" type="submit">Save person</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="compareBar" class="compare-bar" hidden>
+      <p><b id="selectedCount">0</b> people selected</p>
+      <button id="clearSelection" type="button">Clear</button>
+      <button id="viewSelected" class="primary-button" type="button">View selected details</button>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+// Storage can be unavailable (private modes, embedded previews); the page still works without it.
+function lsGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+function lsSet(key, value) { try { localStorage.setItem(key, value); } catch (e) { /* ignore */ } }
+// ---------- People and recommendations are tied to real Program papers (shared/data.js) ----------
+const STORE = window.CHIStore;
+const SESSIONS = Object.fromEntries(CHI.sessions.map(s => [s.id, s]));
+const PAPERS = Object.fromEntries(CHI.sessions.flatMap(s => s.contents.map(c => [c.id, {...c, session: s}])));
+const dayShort = d => new Date(d + "T12:00:00").toLocaleDateString("en-GB", {weekday: "short", day: "numeric", month: "short"}).replace(",", "");
+const sessionWhen = s => `${dayShort(s.date)} ${s.startTime}`;
+const programHref = id => `../program/?session=${encodeURIComponent(id)}`;
+const mapHref = room => `../map/?room=${encodeURIComponent(room)}`;
+
+const peopleBase = [
+  {
+    id: "maya-chen", author: "Maya Chen", initials: "MC", name: "Dr. Maya Chen", affiliation: "Carnegie Mellon University",
+    color: "#314f44", topics: ["Human-AI Interaction", "Accessibility"], relations: ["Adjacent field", "Shared method"],
+    role: "Paper author", roleDetail: "Presenting a paper on contrastive explanations for AI decisions.",
+    why: "Maya studies shared control through an accessibility lens—useful for questioning who can understand and override an AI system.",
+    bridge: "Your HAI focus ↔ Maya’s accessibility framework", community: "Mixed-Initiative Systems · Accessible Computing",
+    paper: "ai-shared-control-paper-3", contact: "Author profile and session Q&A", fit: 96
+  },
+  {
+    id: "samira-okafor", author: "Samira Okafor", initials: "SO", name: "Samira Okafor", affiliation: "University of Edinburgh",
+    color: "#a54b25", topics: ["Human-AI Interaction", "Critical Design"], relations: ["Adjacent field", "Same session"],
+    role: "Paper author", roleDetail: "Co-presenting work on why people refuse robotic help, and how refusal can be designed.",
+    why: "Samira uses speculative artifacts to expose assumptions in AI interfaces. Her work can help you frame HAI questions beyond efficiency and usability.",
+    bridge: "Your interaction design ↔ Samira’s critical design practice", community: "Critical Computing · Speculative Design",
+    paper: "robots-in-public-paper-4", contact: "Author profile and conference messaging", fit: 93
+  },
+  {
+    id: "elena-ruiz", author: "Elena Ruiz", initials: "ER", name: "Prof. Elena Ruiz", affiliation: "Universitat Pompeu Fabra",
+    color: "#6b5a16", topics: ["Learning Technologies", "Human-AI Interaction"], relations: ["Adjacent field", "Shared method"],
+    role: "Paper author", roleDetail: "Presenting a study of how students show partial reasoning to an automated tutor.",
+    why: "Elena studies how learners build mental models of AI. This offers a different way to evaluate whether people understand an interactive AI system.",
+    bridge: "Your HAI evaluation ↔ Elena’s learning-science methods", community: "Learning Sciences · AI Literacy",
+    paper: "learning-together-paper-3", contact: "Author profile and session Q&A", fit: 91
+  },
+  {
+    id: "noah-williams", author: "Noah Williams", initials: "NW", name: "Noah Williams", affiliation: "Georgia Institute of Technology",
+    color: "#2b6f86", topics: ["Accessibility", "Learning Technologies"], relations: ["Shared method"],
+    role: "Paper author", roleDetail: "Presenting “access friction” as a lens for documenting repeated breakdowns across services.",
+    why: "Noah combines participatory design with accessible services. The method may transfer to your work even though the application domain is different.",
+    bridge: "Your co-design method ↔ Noah’s accessible service setting", community: "Participatory Design · Accessible Services",
+    paper: "access-beyond-compliance-paper-4", contact: "Author profile and public project page", fit: 88
+  },
+  {
+    id: "aisha-rahman", author: "Aisha Rahman", initials: "AR", name: "Dr. Aisha Rahman", affiliation: "University of Toronto",
+    color: "#6d4a8a", topics: ["Social Computing", "Human-AI Interaction"], relations: ["Adjacent field"],
+    role: "Paper author", roleDetail: "Co-presenting lightweight mechanisms that let large communities revise their own rules.",
+    why: "Aisha shifts the unit of analysis from an individual user to a community. Her work can broaden how you think about human–AI interaction outcomes.",
+    bridge: "Your individual interaction ↔ Aisha’s community-level analysis", community: "Social Computing · Online Communities",
+    paper: "community-moderation-paper-3", contact: "Author profile and session Q&A", fit: 86
+  },
+  {
+    id: "joon-park", author: "Joon Park", initials: "JP", name: "Joon Park", affiliation: "KAIST",
+    color: "#1c3a2e", topics: ["Critical Design", "Learning Technologies"], relations: ["Shared method"],
+    role: "Paper author", roleDetail: "Presenting a tool that links design critique to later iterations.",
+    why: "Joon turns critical reflection into a tangible design activity. This is relevant if you want your HAI prototype to reveal its own assumptions.",
+    bridge: "Your AI prototype ↔ Joon’s reflective critique toolkit", community: "Design Education · Critical AI",
+    paper: "creative-tools-paper-4", contact: "Author profile and public researcher page", fit: 83
+  }
+];
+
+// Touchpoints, work titles and "Your schedule" come from Program data and the visitor's plan.
+function hydratePerson(p) {
+  const paper = PAPERS[p.paper], s = paper.session, plan = STORE.read("plan");
+  const relations = p.relations.filter(r => r !== "Your schedule").concat(plan.includes(s.id) ? ["Your schedule"] : []);
+  return {...p, relations, work: paper.title, sessionId: s.id, room: s.room,
+    touchpoint: `${sessionWhen(s)} · ${s.title} · ${CHI.roomLabel(s.room)}`,
+    touchpointOrder: new Date(`${s.date}T12:00:00`).getTime() / 1e5 + parseInt(s.startTime, 10) + (/PM/.test(s.startTime) && !/^12/.test(s.startTime) ? 12 : 0)};
+}
+let people = peopleBase.map(hydratePerson);
+
+const recBase = [
+  { id: "rec-access-friction", type: "Paper", paper: "access-beyond-compliance-paper-4", topic: "Accessibility",
+    categories: ["Trending", "Explore by Topic", "Related to My Interests"], bridge: "Human–AI control ↔ Accessibility",
+    why: "Related to your selected topic through accessibility: it documents the repeated breakdowns disabled people meet across services.",
+    paperAvailable: true, videoAvailable: true, videoDuration: "14 min" },
+  { id: "rec-refusing-machine", type: "Paper", paper: "robots-in-public-paper-4", topic: "Critical Design",
+    categories: ["Trending", "Explore by Topic", "Related to My Interests"], bridge: "AI assistance ↔ Critical Design",
+    why: "Related to Human-AI Interaction through a different disciplinary lens: when should an assistant step back?",
+    paperAvailable: true, videoAvailable: false, videoDuration: "" },
+  { id: "rec-learning-together", type: "Session", session: "learning-together", topic: "Learning Technologies",
+    categories: ["Trending", "Explore by Topic", "Related to My Interests"], bridge: "Mental models ↔ Learning Technologies",
+    why: "Related to your interest in explainability through the question of how people learn with automated systems.",
+    paperAvailable: true, videoAvailable: true, videoDuration: "22 min" },
+  { id: "rec-fork-in-road", type: "Paper", paper: "ai-shared-control-paper-3", topic: "Human-AI Interaction",
+    categories: ["Explore by Topic", "Related to My Interests"], bridge: "Explanations ↔ Decision making",
+    why: "Directly on your starting point: contrastive explanations that show alternatives before people accept a recommendation.",
+    paperAvailable: true, videoAvailable: false, videoDuration: "" },
+  { id: "rec-rules-revise", type: "Paper", paper: "community-moderation-paper-3", topic: "Social Computing",
+    categories: ["Trending", "Explore by Topic"], bridge: "Individual interaction ↔ Community outcomes",
+    why: "Trending across the community because it shifts evaluation from individual users to collective agency.",
+    paperAvailable: true, videoAvailable: true, videoDuration: "18 min" }
+];
+const contentRecommendations = recBase.map(r => {
+  const paper = r.paper ? PAPERS[r.paper] : null, s = paper ? paper.session : SESSIONS[r.session];
+  return {...r, contentId: paper ? paper.id : null, sessionId: s.id, room: s.room,
+    title: paper ? paper.title : s.title,
+    authors: paper ? paper.authors.join(" · ") : `${s.contents.length} papers · ${s.category}`,
+    date: dayShort(s.date),
+    meta: `${r.type} · ${sessionWhen(s)} · ${CHI.roomLabel(s.room)}`,
+    description: paper ? paper.abstract.split(". ")[0] + "." : s.description,
+    abstract: paper ? paper.abstract : s.description };
+});
+const sessionDetails = Object.fromEntries(contentRecommendations.map(r => {
+  const s = SESSIONS[r.sessionId];
+  return [r.id, [{id: s.id, title: s.title, time: `${sessionWhen(s)}–${s.endTime}`, location: CHI.roomLabel(s.room), room: s.room, format: s.category,
+    host: [...new Set(s.contents.flatMap(c => c.authors))].slice(0, 4).join(" · ") + " …"}]];
+}));
+
+// Saves go to the same lists as Program and My: papers → "chi-saved-papers", sessions → "chi-plan".
+function storeSet(name, keyOf) {
+  return {
+    has: id => { const k = keyOf(id); return !!k && STORE.read(name).includes(k); },
+    add: id => { const k = keyOf(id); if (!k) return; const l = STORE.read(name); if (!l.includes(k)) { l.push(k); STORE.write(name, l); } },
+    delete: id => { const k = keyOf(id); if (k) STORE.write(name, STORE.read(name).filter(x => x !== k)); }
+  };
+}
+const recById = id => contentRecommendations.find(r => r.id === id);
+const paperKey = id => (recById(id) || {}).contentId || null;
+const sessionKey = id => String(id).startsWith("session:") ? String(id).split(":").pop() : (recById(id) || {}).sessionId || null;
+
+const topicOptions = ["All topics", "Human-AI Interaction", "Accessibility", "Critical Design", "Learning Technologies", "Social Computing"];
+const relationOptions = ["All relationships", "Adjacent field", "Shared method", "Same session", "Your schedule"];
+const intentions = ["Follow their research", "Meet at a session", "Discuss a method", "Potential collaboration", "Reference for my project", "Introduce to a teammate"];
+const interestOptions = CHI.availableInterests;
+const defaultInterests = CHI.defaults.interests;
+
+function readStoredInterests() {
+  try {
+    const stored = JSON.parse(lsGet("chi-user-interests") || "null");
+    if (!stored || typeof stored.primary !== "string" || !stored.primary.trim()) return {...defaultInterests, explore: [...defaultInterests.explore]};
+    const explore = Array.isArray(stored.explore)
+      ? [...new Set(stored.explore.filter(item => typeof item === "string").map(item => item.trim()).filter(Boolean))]
+      : [...defaultInterests.explore];
+    const norm = v => v.replace(/–/g, "-").replace(/^Education$/, "Learning Technologies");
+    const primary = norm(stored.primary.trim());
+    return { primary, explore: [...new Set(explore.map(norm))].filter(item => item.toLowerCase() !== primary.toLowerCase()) };
+  } catch {
+    return {...defaultInterests, explore: [...defaultInterests.explore]};
+  }
+}
+
+const state = {
+  topic: "All topics", relation: "All relationships", query: "", affiliationQuery: "", sort: "relevance", selected: new Set(), activePerson: null,
+  saved: STORE.read("people") || {}, tab: "people",
+  interests: readStoredInterests(),
+  view: location.hash.startsWith("#recommendations") ? "recommendations" : "people",
+  recommendationCategory: "Trending", recommendationTopic: "All topics", recommendationType: "All types", recommendationDate: "All dates", activeContent: null, activeSession: null,
+  dismissedRecommendations: new Set(JSON.parse(lsGet("chi-dismissed-recommendations") || "[]")),
+  likedRecommendations: new Set(JSON.parse(lsGet("chi-liked-recommendations") || "[]")),
+  contentSaves: storeSet("papers", paperKey),
+  scheduleSaves: storeSet("plan", sessionKey)
+};
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const peopleGrid = $("#peopleGrid");
+const affiliationGrid = $("#affiliationGrid");
+const affiliationEmptyState = $("#affiliationEmptyState");
+const emptyState = $("#emptyState");
+const drawer = $("#profileDrawer");
+const backdrop = $("#drawerBackdrop");
+const savedPanel = $("#savedPanel");
+const saveDialog = $("#saveDialog");
+const interestDialog = $("#interestDialog");
+let interestDraft = { primary: "", explore: [] };
+
+function escapeHtml(value = "") {
+  return value.replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#039;",'"':"&quot;"}[char]));
+}
+
+function formatInterestList(items) {
+  if (!items.length) return "No additional directions selected yet";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+}
+
+function personalizedReason(text) {
+  return text.replaceAll("Human–AI Interaction", state.interests.primary).replaceAll("Human-AI Interaction", state.interests.primary);
+}
+
+function renderInterestSummary() {
+  const {primary, explore} = state.interests;
+  $("#startingPointValue").textContent = primary;
+  $("#exploreInterestsCopy").textContent = explore.length
+    ? `Looking beyond your field: ${formatInterestList(explore)}.`
+    : "Add directions you want to explore.";
+  $("#recommendationsInterestText").textContent = primary;
+  $("#recommendationPrimaryInterest").textContent = primary;
+  $("#recommendationExploreCopy").textContent = explore.length
+    ? `Looking beyond your field: ${formatInterestList(explore)}.`
+    : "Add directions you want to explore.";
+}
+
+function renderPrimaryInterestOptions() {
+  const hasPresetPrimary = interestOptions.includes(interestDraft.primary);
+  const options = [...interestOptions, "__custom"];
+  $("#primaryInterestTriggerText").textContent = hasPresetPrimary ? interestDraft.primary : interestDraft.primary || "Another direction…";
+  $("#primaryInterestOptions").innerHTML = options.map(option => {
+    const isCustom = option === "__custom";
+    const checked = isCustom ? !hasPresetPrimary : option === interestDraft.primary;
+    return `<label class="interest-menu-option">
+      <input type="radio" name="primaryInterest" value="${escapeHtml(option)}" ${checked ? "checked" : ""} />
+      <span>${isCustom ? "Another direction…" : escapeHtml(option)}</span>
+    </label>`;
+  }).join("");
+  $$('#primaryInterestOptions input[name="primaryInterest"]').forEach(input => input.addEventListener("change", () => {
+    const custom = input.value === "__custom";
+    $("#customPrimaryField").hidden = !custom;
+    interestDraft.primary = custom ? $("#customPrimaryInterest").value.trim() : input.value;
+    $("#primaryInterestTriggerText").textContent = custom ? interestDraft.primary || "Another direction…" : input.value;
+    interestDraft.explore = interestDraft.explore.filter(item => item.toLowerCase() !== interestDraft.primary.toLowerCase());
+    renderExploreInterestOptions();
+    closeInterestDropdown("primaryInterestOptions", "primaryInterestTrigger");
+    if (custom) $("#customPrimaryInterest").focus();
+  }));
+}
+
+function updateExploreInterestTrigger() {
+  const count = interestDraft.explore.length;
+  $("#exploreInterestTriggerText").textContent = count
+    ? `${count} selected · ${formatInterestList(interestDraft.explore)}`
+    : "Choose directions";
+}
+
+function renderExploreInterestOptions() {
+  $("#exploreInterestOptions").innerHTML = interestOptions.map(option => `
+    <label class="interest-menu-option">
+      <input type="checkbox" value="${escapeHtml(option)}" ${interestDraft.explore.includes(option) ? "checked" : ""} ${option.toLowerCase() === interestDraft.primary.toLowerCase() ? "disabled" : ""} />
+      <span>${escapeHtml(option)}</span>
+    </label>`).join("") + `<button id="closeExploreInterestMenu" class="interest-menu-done" type="button">Done</button>`;
+  $$('#exploreInterestOptions input[type="checkbox"]').forEach(input => input.addEventListener("change", () => {
+    if (input.checked) {
+      if (!interestDraft.explore.includes(input.value)) interestDraft.explore.push(input.value);
+    } else {
+      interestDraft.explore = interestDraft.explore.filter(item => item !== input.value);
+    }
+    renderExploreInterestOptions();
+  }));
+  $("#closeExploreInterestMenu").addEventListener("click", () => closeInterestDropdown("exploreInterestOptions", "exploreInterestTrigger"));
+  updateExploreInterestTrigger();
+}
+
+function closeInterestDropdown(menuId, triggerId) {
+  $("#" + menuId).hidden = true;
+  $("#" + triggerId).setAttribute("aria-expanded", "false");
+}
+
+function closeInterestDropdowns() {
+  closeInterestDropdown("primaryInterestOptions", "primaryInterestTrigger");
+  closeInterestDropdown("exploreInterestOptions", "exploreInterestTrigger");
+}
+
+function toggleInterestDropdown(menuId, triggerId) {
+  const menu = $("#" + menuId);
+  const willOpen = menu.hidden;
+  closeInterestDropdowns();
+  menu.hidden = !willOpen;
+  $("#" + triggerId).setAttribute("aria-expanded", String(willOpen));
+}
+
+function renderCustomExploreInterests() {
+  const customItems = interestDraft.explore.filter(item => !interestOptions.includes(item));
+  $("#customExploreList").innerHTML = customItems.map(item => `
+    <span class="custom-interest-tag">${escapeHtml(item)}<button type="button" data-remove-custom-interest="${escapeHtml(item)}" aria-label="Remove ${escapeHtml(item)}">×</button></span>`).join("");
+  $$('[data-remove-custom-interest]').forEach(button => button.addEventListener("click", () => {
+    interestDraft.explore = interestDraft.explore.filter(item => item !== button.dataset.removeCustomInterest);
+    renderCustomExploreInterests();
+    updateExploreInterestTrigger();
+  }));
+}
+
+function openInterestDialog() {
+  interestDraft = { primary: state.interests.primary, explore: [...state.interests.explore] };
+  const hasPresetPrimary = interestOptions.includes(interestDraft.primary);
+  $("#customPrimaryField").hidden = hasPresetPrimary;
+  $("#customPrimaryInterest").value = hasPresetPrimary ? "" : interestDraft.primary;
+  $("#customExploreInput").value = "";
+  closeInterestDropdowns();
+  renderPrimaryInterestOptions();
+  renderExploreInterestOptions();
+  renderCustomExploreInterests();
+  interestDialog.showModal();
+}
+
+function addCustomExploreInterest() {
+  const input = $("#customExploreInput");
+  const value = input.value.trim();
+  if (!value) { input.focus(); return; }
+  if (value.toLowerCase() === interestDraft.primary.trim().toLowerCase()) {
+    showToast("Your exploration direction should be different from your main direction."); input.focus(); return;
+  }
+  if (!interestDraft.explore.some(item => item.toLowerCase() === value.toLowerCase())) interestDraft.explore.push(value);
+  input.value = "";
+  renderCustomExploreInterests();
+  updateExploreInterestTrigger();
+}
+
+function createFilters(container, options, key) {
+  container.innerHTML = options.map(option => `<button class="filter-chip ${state[key] === option ? "active" : ""}" type="button" data-value="${escapeHtml(option)}">${escapeHtml(option)}</button>`).join("");
+  $$("button", container).forEach(button => button.addEventListener("click", () => {
+    state[key] = button.dataset.value;
+    createFilters(container, options, key);
+    renderPeople();
+  }));
+}
+
+function filteredPeople() {
+  const q = state.query.trim().toLowerCase();
+  return people.filter(person => {
+    const matchesTopic = state.topic === "All topics" || person.topics.includes(state.topic);
+    const matchesRelation = state.relation === "All relationships" || person.relations.includes(state.relation);
+    const haystack = [person.name, person.affiliation, person.role, person.why, person.community, ...person.topics].join(" ").toLowerCase();
+    return matchesTopic && matchesRelation && (!q || haystack.includes(q));
+  }).sort((a, b) => {
+    if (state.sort === "session") return a.touchpointOrder - b.touchpointOrder;
+    if (state.sort === "name") return a.name.localeCompare(b.name);
+    return b.fit - a.fit;
+  });
+}
+
+function personCard(person) {
+  const isSelected = state.selected.has(person.id);
+  const isSaved = Boolean(state.saved[person.id]);
+  return `
+    <article class="person-card ${isSelected ? "selected" : ""}" data-person-id="${person.id}">
+      <button class="select-person" type="button" aria-label="${isSelected ? "Deselect" : "Select"} ${escapeHtml(person.name)}" aria-pressed="${isSelected}">${isSelected ? "✓" : "+"}</button>
+      <div class="person-head">
+        <div class="avatar" style="--avatar:${person.color}" aria-hidden="true">${person.initials}</div>
+        <div><h3 class="person-name">${escapeHtml(person.name)}</h3><p class="affiliation">${escapeHtml(person.affiliation)}</p></div>
+      </div>
+      <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
+      <div class="why-card"><span>WHY THIS PERSON?</span><p>${escapeHtml(personalizedReason(person.why))}</p></div>
+      <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>Possible touchpoint</b><br>${escapeHtml(person.touchpoint)}</span></p>
+      <div class="person-actions">
+        <button class="secondary-button save-quick ${isSaved ? "saved" : ""}" type="button">${isSaved ? "Saved with intention" : "Save with intention"}</button>
+        <button class="primary-button view-details" type="button">View details</button>
+      </div>
+    </article>`;
+}
+
+function renderPeople() {
+  const results = filteredPeople();
+  peopleGrid.innerHTML = results.map(personCard).join("");
+  $("#resultSummary").innerHTML = `<strong>${results.length} people</strong> · explanations are based on your ${escapeHtml(state.interests.primary)} starting point`;
+  emptyState.hidden = results.length > 0 || state.tab !== "people";
+  peopleGrid.hidden = state.tab !== "people";
+  bindCardEvents();
+}
+
+function bindCardEvents() {
+  $$(".person-card").forEach(card => {
+    const person = people.find(item => item.id === card.dataset.personId);
+    $(".select-person", card).addEventListener("click", () => toggleSelection(person.id));
+    $(".view-details", card).addEventListener("click", () => openDrawer(person));
+    $(".save-quick", card).addEventListener("click", () => openSaveDialog(person));
+  });
+}
+
+function toggleSelection(id) {
+  state.selected.has(id) ? state.selected.delete(id) : state.selected.add(id);
+  renderPeople(); updateCompareBar();
+}
+
+function updateCompareBar() {
+  const count = state.selected.size;
+  $("#selectedCount").textContent = count;
+  $("#compareBar").hidden = count === 0;
+}
+
+function openDrawer(person) {
+  state.activePerson = person;
+  $("#drawerContent").innerHTML = `
+    <div class="drawer-profile-head"><div class="avatar" style="--avatar:${person.color}">${person.initials}</div><div><h2 id="drawerName">${escapeHtml(person.name)}</h2><p class="affiliation">${escapeHtml(person.affiliation)}</p></div></div>
+    <div class="drawer-section"><span>CONFERENCE ROLE</span><h3>${escapeHtml(person.role)}</h3><p>${escapeHtml(person.roleDetail)}</p><div class="role-row">${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div></div>
+    <div class="drawer-section"><span>YOUR RELATIONSHIP</span><h3>${escapeHtml(person.bridge)}</h3><p>${escapeHtml(personalizedReason(person.why))}</p></div>
+    <div class="drawer-section"><span>NETWORK & COMMUNITY</span><h3>${escapeHtml(person.community)}</h3><div class="drawer-network"><div class="network-node">Your ${escapeHtml(state.interests.primary)} work</div><span>↔</span><div class="network-node">${escapeHtml(person.topics[1] || person.topics[0])}</div></div></div>
+    <div class="drawer-section"><span>WHERE YOU MAY MEET</span><h3>${escapeHtml(person.touchpoint)}</h3><p><b>Related work:</b> ${escapeHtml(person.work)}</p><p class="drawer-links"><a href="${programHref(person.sessionId)}">Open session in Program →</a><a href="${mapHref(person.room)}">Show room on Map →</a></p></div>
+    <div class="drawer-section"><span>FOLLOW-UP</span><h3>Keep the context, not only the name</h3><ul><li>${escapeHtml(person.contact)}</li><li>Save why this person matters to your work</li><li>Record the session, poster or recommendation that led you here</li></ul></div>
+    <div class="drawer-actions"><button id="drawerSave" class="primary-button" type="button">${state.saved[person.id] ? "Update saved intention" : "Save with intention"}</button><a class="secondary-button" href="${programHref(person.sessionId)}">See their paper in Program</a></div>`;
+  drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); backdrop.hidden = false;
+  $("#drawerSave").addEventListener("click", () => openSaveDialog(person));
+}
+
+function closeDrawers() {
+  drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true");
+  savedPanel.classList.remove("open"); savedPanel.setAttribute("aria-hidden", "true");
+  backdrop.hidden = true;
+}
+
+function openSaveDialog(person) {
+  state.activePerson = person;
+  const existing = state.saved[person.id] || {};
+  $("#saveDialogTitle").textContent = `Save ${person.name}`;
+  $("#intentionOptions").innerHTML = intentions.map((item, index) => `<label class="choice-option"><input type="radio" name="intention" value="${escapeHtml(item)}" ${existing.intention === item || (!existing.intention && index === 0) ? "checked" : ""}><span>${escapeHtml(item)}</span></label>`).join("");
+  $("#contextSelect").value = existing.context || "";
+  $("#privateNote").value = existing.note || "";
+  saveDialog.showModal();
+}
+
+function persistSaves() {
+  STORE.write("people", state.saved);
+  updateSavedCounts(); renderSaved(); renderPeople(); renderRecommendations();
+}
+
+function updateSavedCounts() {
+  const count = Object.keys(state.saved).length;
+  $("#savedCountTop").textContent = count;
+}
+
+function renderSaved() {
+  const entries = Object.entries(state.saved);
+  $("#savedList").innerHTML = entries.length ? entries.map(([id, save]) => {
+    const person = people.find(p => p.id === id); if (!person) return "";
+    return `<article class="saved-item" data-person-id="${id}"><div class="saved-item-head"><h3>${escapeHtml(person.name)}</h3><button class="remove-save" type="button">Remove</button></div><div class="saved-meta"><span><b>Intention:</b> ${escapeHtml(save.intention)}</span><span><b>Noticed at:</b> ${escapeHtml(save.context)}</span><span><b>Next touchpoint:</b> ${escapeHtml(person.touchpoint)}</span></div>${save.note ? `<div class="saved-note">${escapeHtml(save.note)}</div>` : ""}</article>`;
+  }).join("") : `<div class="saved-empty"><b>No saved people yet.</b><p>Use “Save with intention” on a person card to keep the reason and conference context.</p></div>`;
+  $$(".remove-save", $("#savedList")).forEach(button => button.addEventListener("click", () => {
+    const id = button.closest(".saved-item").dataset.personId; delete state.saved[id]; persistSaves(); showToast("Removed from saved people.");
+  }));
+}
+
+function openSavedPanel() {
+  closeDrawers(); renderSaved(); savedPanel.classList.add("open"); savedPanel.setAttribute("aria-hidden", "false"); backdrop.hidden = false;
+}
+
+function renderAffiliations() {
+  const query = state.affiliationQuery.trim().toLowerCase();
+  const groups = [...new Set(people.map(p => p.affiliation))].map(name => {
+    const members = people.filter(p => p.affiliation === name);
+    return {name, members, topics: [...new Set(members.flatMap(p => p.topics))]};
+  }).filter(group => !query || [group.name, ...group.topics].join(" ").toLowerCase().includes(query));
+  $("#affiliationSummary").innerHTML = query
+    ? `<strong>${groups.length} affiliation${groups.length === 1 ? "" : "s"}</strong> matching “${escapeHtml(state.affiliationQuery.trim())}”`
+    : `<strong>${groups.length} affiliations</strong> · search by institution or research community`;
+  affiliationGrid.innerHTML = groups.map(group => `<article class="affiliation-card"><h3>${escapeHtml(group.name)}</h3><p>${group.members.length} related ${group.members.length === 1 ? "person" : "people"} · ${group.topics.map(escapeHtml).join(" · ")}</p><button type="button" data-affiliation="${escapeHtml(group.name)}">View related people →</button></article>`).join("");
+  affiliationEmptyState.hidden = groups.length > 0 || state.tab !== "affiliations";
+  $$('[data-affiliation]', affiliationGrid).forEach(button => button.addEventListener("click", () => {
+    state.tab = "people"; state.query = button.dataset.affiliation; $("#searchInput").value = state.query; setTab("people"); renderPeople();
+  }));
+}
+
+function setTab(tab) {
+  state.tab = tab;
+  $("#peopleTab").classList.toggle("active", tab === "people"); $("#peopleTab").setAttribute("aria-selected", tab === "people");
+  $("#affiliationsTab").classList.toggle("active", tab === "affiliations"); $("#affiliationsTab").setAttribute("aria-selected", tab === "affiliations");
+  peopleGrid.hidden = tab !== "people"; affiliationGrid.hidden = tab !== "affiliations";
+  $(".filter-section").style.display = tab === "people" ? "grid" : "none";
+  $(".filter-section.compact").style.display = tab === "people" ? "grid" : "none";
+  $(".results-toolbar").style.display = tab === "people" ? "flex" : "none";
+  $("#peopleSearchPanel").hidden = tab !== "people";
+  $("#affiliationSearchPanel").hidden = tab !== "affiliations";
+  $("#affiliationResultsToolbar").hidden = tab !== "affiliations";
+  $("#directory-title").textContent = tab === "people" ? "People related to your interests" : "Affiliations connected to this network";
+  emptyState.hidden = true;
+  affiliationEmptyState.hidden = true;
+  if (tab === "affiliations") renderAffiliations(); else renderPeople();
+}
+
+function recommendationPeople() {
+  const orders = {
+    "Trending": ["maya-chen", "samira-okafor", "aisha-rahman"],
+    "Explore by Topic": ["noah-williams", "elena-ruiz", "joon-park"],
+    "Related to My Interests": ["maya-chen", "elena-ruiz", "samira-okafor"]
+  };
+  const selectedTopics = new Set([state.interests.primary, ...state.interests.explore]);
+  const relatedOrder = [...people]
+    .sort((a, b) => b.topics.filter(topic => selectedTopics.has(topic)).length - a.topics.filter(topic => selectedTopics.has(topic)).length)
+    .slice(0, 3)
+    .map(person => person.id);
+  const order = state.recommendationCategory === "Related to My Interests" ? relatedOrder : orders[state.recommendationCategory];
+  return order
+    .map(id => people.find(person => person.id === id))
+    .filter(person => person && (state.recommendationTopic === "All topics" || person.topics.includes(state.recommendationTopic)))
+    .filter(person => !state.dismissedRecommendations.has(`person:${person.id}`));
+}
+
+function recommendationPersonCard(person) {
+  const key = `person:${person.id}`;
+  const liked = state.likedRecommendations.has(key);
+  const saved = Boolean(state.saved[person.id]);
+  return `
+    <article class="recommendation-person-card ${liked ? "liked" : ""}" data-recommendation-id="${key}" data-person-id="${person.id}">
+      <div class="person-head">
+        <div class="avatar" style="--avatar:${person.color}" aria-hidden="true">${person.initials}</div>
+        <div><h3 class="person-name">${escapeHtml(person.name)}</h3><p class="affiliation">${escapeHtml(person.affiliation)}</p></div>
+      </div>
+      <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(topic => `<span class="tag">${escapeHtml(topic)}</span>`).join("")}</div>
+      <div class="recommendation-reason"><span>WHY RECOMMENDED?</span><p>${escapeHtml(personalizedReason(person.why))}</p></div>
+      <div class="bridge-line"><b>Your research</b><span>↔</span><b>${escapeHtml(person.topics[1] || person.topics[0])}</b></div>
+      <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>Conference moment</b><br>${escapeHtml(person.touchpoint)}</span></p>
+      <div class="recommendation-actions">
+        <button class="secondary-button rec-not-relevant" type="button">Not relevant</button>
+        <button class="secondary-button rec-more ${liked ? "liked-action" : ""}" type="button">${liked ? "More like this ✓" : "More like this"}</button>
+        <button class="secondary-button rec-save ${saved ? "saved-action" : ""}" type="button">${saved ? "Saved with intention" : "Save with intention"}</button>
+        <button class="primary-button rec-details" type="button">View profile</button>
+      </div>
+    </article>`;
+}
+
+function contentRecommendationCard(item) {
+  const saved = state.contentSaves.has(item.id);
+  const scheduled = state.scheduleSaves.has(item.id);
+  return `
+    <article class="content-recommendation-card" data-recommendation-id="content:${item.id}" data-content-id="${item.id}">
+      <div class="content-type-row"><span class="content-type ${item.type.toLowerCase()}">${item.type.toUpperCase()}</span><span class="content-lens">${escapeHtml(item.topic)}</span></div>
+      <h3><button class="content-title-button" type="button">${escapeHtml(item.title)}</button></h3>
+      <p class="content-authors">${escapeHtml(item.authors)}</p>
+      <p class="affiliation">${escapeHtml(item.meta)}</p>
+      <p class="content-description">${escapeHtml(item.description)}</p>
+      <div class="recommendation-reason"><span>WHY RECOMMENDED?</span><p>${escapeHtml(personalizedReason(item.why))}</p></div>
+      <div class="content-resources" aria-label="Available resources"><span class="${item.paperAvailable ? "available" : "unavailable"}">▤ ${item.paperAvailable ? "Paper available" : "Paper unavailable"}</span><span class="${item.videoAvailable ? "available" : "unavailable"}">▶ ${item.videoAvailable ? `Video · ${escapeHtml(item.videoDuration)}` : "Video unavailable"}</span></div>
+      <div class="recommendation-actions">
+        <button class="secondary-button content-not-relevant" type="button">Not relevant</button>
+        <button class="secondary-button content-save ${saved ? "saved-action" : ""}" type="button" ${item.contentId ? "" : "hidden"}>${saved ? "✓ Saved" : "Save paper"}</button>
+        <button class="secondary-button content-schedule ${scheduled ? "saved-action" : ""}" type="button">${scheduled ? "✓ In My plan" : "Add to My plan"}</button>
+        <button class="primary-button content-details" type="button">View details</button>
+      </div>
+    </article>`;
+}
+
+function renderContentDetail(item) {
+  const saved = state.contentSaves.has(item.id);
+  const scheduled = state.scheduleSaves.has(item.id);
+  const selectedInterestTopics = new Set([state.interests.primary, ...state.interests.explore]);
+  const relatedPeople = people.filter(person => person.topics.includes(item.topic) || person.topics.some(topic => selectedInterestTopics.has(topic))).slice(0, 3);
+  const sessions = sessionDetails[item.id] || [];
+  const sessionCards = sessions.map(session => {
+    const sessionKey = `${item.id}:${session.id}`; // "session:<rec>:<programSessionId>" → plan
+    const open = state.activeSession === sessionKey;
+    const sessionSaved = state.scheduleSaves.has(`session:${sessionKey}`);
+    return `<article class="detail-session-card ${open ? "open" : ""}"><button class="session-open" type="button" data-session-key="${sessionKey}" aria-expanded="${open}"><span class="session-day">${escapeHtml(session.time.split(" · ")[0])}</span><span><b>${escapeHtml(session.title)}</b><small>${escapeHtml(session.time)} · ${escapeHtml(session.location)}</small></span><i>${open ? "Hide session details ↑" : "View session details →"}</i></button>${open ? `<div class="session-expanded"><dl><div><dt>TIME</dt><dd>${escapeHtml(session.time)}</dd></div><div><dt>LOCATION</dt><dd><a href="${mapHref(session.room)}">${escapeHtml(session.location)}</a></dd></div><div><dt>FORMAT</dt><dd>${escapeHtml(session.format)}</dd></div><div><dt>PEOPLE</dt><dd>${escapeHtml(session.host)}</dd></div></dl><button class="secondary-button session-specific-schedule ${sessionSaved ? "saved-action" : ""}" type="button" data-session-key="${sessionKey}">${sessionSaved ? "✓ In My plan" : "Add this session to My plan"}</button> <a class="secondary-button" href="${programHref(session.id)}">Open in Program</a></div>` : ""}</article>`;
+  }).join("");
+  $("#contentDetail").innerHTML = `
+    <button id="backToRecommendations" class="detail-back" type="button">← Back to Recommendations</button>
+    <header class="detail-hero"><div class="content-type-row"><span class="content-type ${item.type.toLowerCase()}">${item.type.toUpperCase()}</span><span class="content-lens">${escapeHtml(item.topic)}</span></div><h1>${escapeHtml(item.title)}</h1><p class="detail-authors">${escapeHtml(item.authors)}</p><p class="detail-meta">${escapeHtml(item.meta)}</p><div class="detail-reason"><span>WHY THIS APPEARED</span><p>${escapeHtml(personalizedReason(item.why))}</p></div><div class="detail-primary-actions"><button id="detailSave" class="secondary-button ${saved ? "saved-action" : ""}" type="button" ${item.contentId ? "" : "hidden"}>${saved ? "✓ Saved" : "Save paper"}</button><button id="detailSchedule" class="primary-button ${scheduled ? "scheduled" : ""}" type="button">${scheduled ? "✓ In My plan" : "Add to My plan"}</button></div></header>
+    <section class="research-materials" aria-labelledby="materials-title"><div class="detail-section-heading"><p class="section-kicker">RESEARCH MATERIALS</p><h2 id="materials-title">Read or watch before choosing a session.</h2></div><div class="material-grid"><article class="material-card ${item.paperAvailable ? "" : "unavailable-card"}"><div class="material-icon">▤</div><div><span>PAPER</span><h3>Read Full Paper</h3><p>${item.paperAvailable ? `Open the paper for “${escapeHtml(item.title)}”.` : "A paper is not available for this item."}</p></div><button class="material-action primary-button" type="button" ${item.paperAvailable ? "" : "disabled"}>${item.paperAvailable ? "Read Full Paper" : "Paper unavailable"}</button></article><article class="material-card ${item.videoAvailable ? "" : "unavailable-card"}"><div class="material-icon">▶</div><div><span>PRESENTATION VIDEO</span><h3>Watch Presentation</h3><p>${item.videoAvailable ? `Presentation recording · ${escapeHtml(item.videoDuration)}.` : "A presentation video has not been published."}</p></div><button class="material-action primary-button" type="button" ${item.videoAvailable ? "" : "disabled"}>${item.videoAvailable ? "Watch Presentation" : "Video unavailable"}</button></article></div></section>
+    <section class="detail-body-grid"><article class="detail-copy"><p class="section-kicker">ABSTRACT & TOPICS</p><h2>Understand the research first.</h2><p>${escapeHtml(item.abstract)}</p><div class="role-row"><span class="tag">${escapeHtml(item.topic)}</span><span class="tag">${escapeHtml(item.bridge)}</span></div></article><aside class="session-summary"><p class="section-kicker">CONFERENCE CONNECTION</p><h2>${sessions.length} ${sessions.length === 1 ? "session" : "sessions"}</h2><p>Each session below opens independently, so you can check its time, place and format before adding it to your schedule.</p></aside></section>
+    <section class="detail-sessions"><div class="detail-section-heading"><p class="section-kicker">SESSIONS, TIME & LOCATION</p><h2>Open every session before deciding.</h2></div><div class="detail-session-list">${sessionCards}</div></section>
+    <section class="detail-related"><p class="section-kicker">RELATED RESEARCH & PEOPLE</p><h2>Continue into the conference network.</h2><div class="detail-related-grid">${relatedPeople.map(person => `<button class="related-person" type="button" data-person-id="${person.id}"><span class="avatar" style="--avatar:${person.color}">${person.initials}</span><span><b>${escapeHtml(person.name)}</b><small>${escapeHtml(person.affiliation)}</small></span><i>View profile →</i></button>`).join("")}</div></section>`;
+  $("#backToRecommendations").addEventListener("click", () => history.state && history.state.recDetail ? history.back() : setView("recommendations"));
+  const toggleSave = () => { state.contentSaves.has(item.id) ? state.contentSaves.delete(item.id) : state.contentSaves.add(item.id); persistRecommendationFeedback(); renderRecommendations(); renderContentDetail(item); showToast(state.contentSaves.has(item.id) ? "Paper saved." : "Paper removed."); };
+  const toggleSchedule = () => { state.scheduleSaves.has(item.id) ? state.scheduleSaves.delete(item.id) : state.scheduleSaves.add(item.id); persistRecommendationFeedback(); renderRecommendations(); renderContentDetail(item); showToast(state.scheduleSaves.has(item.id) ? "Added to My plan." : "Removed from My plan."); };
+  $("#detailSave").addEventListener("click", toggleSave); $("#detailSchedule").addEventListener("click", toggleSchedule);
+  $$(".session-open").forEach(button => button.addEventListener("click", () => { state.activeSession = state.activeSession === button.dataset.sessionKey ? null : button.dataset.sessionKey; renderContentDetail(item); }));
+  $$(".session-specific-schedule").forEach(button => button.addEventListener("click", () => { const key = `session:${button.dataset.sessionKey}`; state.scheduleSaves.has(key) ? state.scheduleSaves.delete(key) : state.scheduleSaves.add(key); persistRecommendationFeedback(); renderContentDetail(item); showToast(state.scheduleSaves.has(key) ? "Session added to My plan." : "Session removed from My plan."); }));
+  $$(".material-action:not([disabled])").forEach(button => button.addEventListener("click", () => showToast("Prototype action: the verified resource link would open here.")));
+  $$(".related-person").forEach(button => button.addEventListener("click", () => openDrawer(people.find(person => person.id === button.dataset.personId))));
+}
+
+function openContentDetail(item) {
+  state.activeContent = item; state.activeSession = null; state.view = "content-detail"; closeDrawers();
+  $("#peopleView").hidden = true; $("#recommendationsView").hidden = true; $("#contentDetailView").hidden = false;
+  if (window.CHIShell) CHIShell.setActive("recommendations");
+  // Push an entry so the browser Back button returns to the list instead of leaving the site.
+  if (location.hash !== `#recommendations-${item.id}`) history.pushState({ recDetail: true }, "", `#recommendations-${item.id}`); renderContentDetail(item); window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+function persistRecommendationFeedback() {
+  lsSet("chi-dismissed-recommendations", JSON.stringify([...state.dismissedRecommendations]));
+  lsSet("chi-liked-recommendations", JSON.stringify([...state.likedRecommendations]));
+}
+
+function filteredContentRecommendations() {
+  return contentRecommendations.filter(item =>
+    item.categories.includes(state.recommendationCategory) &&
+    (state.recommendationTopic === "All topics" || item.topic === state.recommendationTopic) &&
+    (state.recommendationType === "All types" || item.type === state.recommendationType) &&
+    (state.recommendationDate === "All dates" || item.date === state.recommendationDate) &&
+    !state.dismissedRecommendations.has(`content:${item.id}`)
+  );
+}
+
+function renderRecommendations() {
+  const peopleResults = recommendationPeople();
+  const contentResults = filteredContentRecommendations();
+  $("#recommendedPeopleGrid").innerHTML = peopleResults.length
+    ? peopleResults.map(recommendationPersonCard).join("")
+    : `<div class="recommendation-empty">You’ve dismissed the current people recommendations. Reset feedback to bring them back.</div>`;
+  $("#recommendedContentGrid").innerHTML = contentResults.length
+    ? contentResults.map(contentRecommendationCard).join("")
+    : `<div class="recommendation-empty">No remaining content under this lens. Try another recommendation lens or reset feedback.</div>`;
+  const logic = state.recommendationCategory === "Trending" ? "ranked by community attention, then narrowed by your filters" : state.recommendationCategory === "Explore by Topic" ? "organized by the research topic you choose" : `matched to your selected ${state.interests.primary} interests with a visible reason`;
+  $("#recommendationStatus").textContent = `${contentResults.length} content recommendations · ${state.recommendationCategory} is ${logic}.`;
+  bindRecommendationEvents();
+}
+
+function bindRecommendationEvents() {
+  $$(".recommendation-person-card").forEach(card => {
+    const person = people.find(item => item.id === card.dataset.personId);
+    $(".rec-not-relevant", card).addEventListener("click", () => dismissRecommendation(card.dataset.recommendationId, "Person removed. The reason is no longer used for this recommendation set."));
+    $(".rec-more", card).addEventListener("click", () => likeRecommendation(card.dataset.recommendationId));
+    $(".rec-save", card).addEventListener("click", () => openSaveDialog(person));
+    $(".rec-details", card).addEventListener("click", () => openDrawer(person));
+  });
+  $$(".content-recommendation-card").forEach(card => {
+    const item = contentRecommendations.find(content => content.id === card.dataset.contentId);
+    $(".content-not-relevant", card).addEventListener("click", () => dismissRecommendation(card.dataset.recommendationId, "Item removed. Change the category or filters to explore a different path."));
+    $(".content-save", card).addEventListener("click", () => {
+      const id = card.dataset.contentId;
+      if (state.contentSaves.has(id)) state.contentSaves.delete(id); else state.contentSaves.add(id);
+      persistRecommendationFeedback(); renderRecommendations();
+      showToast(state.contentSaves.has(id) ? "Saved with its recommendation reason." : "Removed from saved content.");
+    });
+    $(".content-schedule", card).addEventListener("click", () => {
+      const id = card.dataset.contentId;
+      state.scheduleSaves.has(id) ? state.scheduleSaves.delete(id) : state.scheduleSaves.add(id);
+      persistRecommendationFeedback(); renderRecommendations();
+      showToast(state.scheduleSaves.has(id) ? "Added to My plan." : "Removed from My plan.");
+    });
+    $(".content-title-button", card).addEventListener("click", () => openContentDetail(item));
+    $(".content-details", card).addEventListener("click", () => openContentDetail(item));
+  });
+}
+
+function dismissRecommendation(key, message) {
+  state.dismissedRecommendations.add(key);
+  persistRecommendationFeedback(); renderRecommendations(); showToast(message);
+}
+
+function likeRecommendation(key) {
+  if (state.likedRecommendations.has(key)) state.likedRecommendations.delete(key); else state.likedRecommendations.add(key);
+  persistRecommendationFeedback(); renderRecommendations();
+  showToast(state.likedRecommendations.has(key) ? "Similar people recommendations will be prioritized." : "Preference removed.");
+}
+
+function setView(view, updateHash = true) {
+  state.view = view;
+  if (window.CHIShell) CHIShell.setActive(view === "people" ? "people" : "recommendations");
+  closeDrawers();
+  $("#peopleView").hidden = view !== "people";
+  $("#recommendationsView").hidden = view !== "recommendations";
+  $("#contentDetailView").hidden = true;
+  if (updateHash) history.replaceState(null, "", view === "recommendations" ? "#recommendations" : "#people");
+  if (view === "recommendations") renderRecommendations();
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+let toastTimer;
+function showToast(message) {
+  const toast = $("#toast"); toast.textContent = message; toast.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+$("#searchInput").addEventListener("input", event => { state.query = event.target.value; renderPeople(); });
+$("#affiliationSearchInput").addEventListener("input", event => { state.affiliationQuery = event.target.value; renderAffiliations(); });
+$("#clearAffiliationSearch").addEventListener("click", () => { state.affiliationQuery = ""; $("#affiliationSearchInput").value = ""; renderAffiliations(); $("#affiliationSearchInput").focus(); });
+$("#sortSelect").addEventListener("change", event => { state.sort = event.target.value; renderPeople(); });
+$("#clearFilters").addEventListener("click", () => { state.topic = topicOptions[0]; state.relation = relationOptions[0]; state.query = ""; $("#searchInput").value = ""; createFilters($("#topicFilters"), topicOptions, "topic"); createFilters($("#relationFilters"), relationOptions, "relation"); renderPeople(); });
+$("#peopleTab").addEventListener("click", () => setTab("people"));
+$("#affiliationsTab").addEventListener("click", () => setTab("affiliations"));
+// The site sidebar links to people/ and people/#recommendations; switch views when only the hash changes.
+window.addEventListener("hashchange", () => setView(location.hash.startsWith("#recommendations") ? "recommendations" : "people", false));
+$$('.recommendation-lens').forEach(button => button.addEventListener("click", () => {
+  state.recommendationCategory = button.dataset.category;
+  $$('.recommendation-lens').forEach(item => item.classList.toggle("active", item === button));
+  renderRecommendations(); showToast(`Recommendation category changed to ${state.recommendationCategory}.`);
+}));
+$("#recommendationTopic").addEventListener("change", event => { state.recommendationTopic = event.target.value; renderRecommendations(); });
+$("#recommendationType").addEventListener("change", event => { state.recommendationType = event.target.value; renderRecommendations(); });
+$("#recommendationDate").addEventListener("change", event => { state.recommendationDate = event.target.value; renderRecommendations(); });
+$("#clearRecommendationFilters").addEventListener("click", () => {
+  state.recommendationTopic = "All topics"; state.recommendationType = "All types"; state.recommendationDate = "All dates";
+  $("#recommendationTopic").value = state.recommendationTopic; $("#recommendationType").value = state.recommendationType; $("#recommendationDate").value = state.recommendationDate;
+  renderRecommendations(); showToast("Recommendation filters cleared.");
+});
+$("#resetRecommendationFeedback").addEventListener("click", () => {
+  state.dismissedRecommendations.clear(); state.likedRecommendations.clear();
+  persistRecommendationFeedback(); renderRecommendations(); showToast("Recommendation feedback has been reset.");
+});
+$("#closeDrawer").addEventListener("click", closeDrawers); $("#closeSaved").addEventListener("click", closeDrawers); backdrop.addEventListener("click", closeDrawers);
+$("#showSavedTop").addEventListener("click", openSavedPanel);
+$("#closeSaveDialog").addEventListener("click", () => saveDialog.close()); $("#cancelSave").addEventListener("click", () => saveDialog.close());
+$("#saveForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const person = state.activePerson; const intention = $("input[name='intention']:checked")?.value; const context = $("#contextSelect").value;
+  state.saved[person.id] = { intention, context, note: $("#privateNote").value.trim(), savedAt: new Date().toISOString(), name: person.name, affiliation: person.affiliation };
+  persistSaves(); saveDialog.close(); showToast(`${person.name} saved with context.`);
+});
+$("#clearSelection").addEventListener("click", () => { state.selected.clear(); renderPeople(); updateCompareBar(); });
+$("#viewSelected").addEventListener("click", () => { const first = people.find(p => state.selected.has(p.id)); if (first) openDrawer(first); });
+$("#editInterests").addEventListener("click", openInterestDialog);
+$("#editRecommendationInterests").addEventListener("click", openInterestDialog);
+$("#closeInterestDialog").addEventListener("click", () => interestDialog.close());
+$("#cancelInterestEdit").addEventListener("click", () => interestDialog.close());
+$("#primaryInterestTrigger").addEventListener("click", () => toggleInterestDropdown("primaryInterestOptions", "primaryInterestTrigger"));
+$("#exploreInterestTrigger").addEventListener("click", () => toggleInterestDropdown("exploreInterestOptions", "exploreInterestTrigger"));
+$("#customPrimaryInterest").addEventListener("input", event => {
+  interestDraft.primary = event.target.value.trim();
+  $("#primaryInterestTriggerText").textContent = interestDraft.primary || "Another direction…";
+});
+$("#addCustomExplore").addEventListener("click", addCustomExploreInterest);
+$("#customExploreInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") { event.preventDefault(); addCustomExploreInterest(); }
+});
+$("#interestForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const selectedPrimary = $('input[name="primaryInterest"]:checked')?.value;
+  const primary = (selectedPrimary === "__custom" ? $("#customPrimaryInterest").value : selectedPrimary || "").trim();
+  if (!primary) { $("#customPrimaryInterest").focus(); showToast("Enter your main research direction."); return; }
+  const explore = [...new Set(interestDraft.explore.map(item => item.trim()).filter(item => item && item.toLowerCase() !== primary.toLowerCase()))];
+  state.interests = {primary, explore};
+  lsSet("chi-user-interests", JSON.stringify(state.interests));
+  renderInterestSummary(); renderPeople(); renderRecommendations();
+  interestDialog.close();
+  showToast("Your research interests have been updated.");
+});
+document.addEventListener("click", event => {
+  if (interestDialog.open && !event.target.closest(".interest-dropdown")) closeInterestDropdowns();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "/" && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") { event.preventDefault(); $(state.tab === "affiliations" ? "#affiliationSearchInput" : "#searchInput").focus(); }
+  if (event.key === "Escape") closeDrawers();
+});
+
+createFilters($("#topicFilters"), topicOptions, "topic");
+createFilters($("#relationFilters"), relationOptions, "relation");
+renderInterestSummary(); updateSavedCounts(); renderSaved(); renderPeople(); renderAffiliations(); renderRecommendations(); updateCompareBar(); setView(state.view, false);
+
+// Any author in the Program can be opened here (?person=Name). Curated people open their profile;
+// other authors get a short panel listing their papers in the Program.
+function openAuthor(name) {
+  const papers = Object.values(PAPERS).filter(p => p.authors.includes(name));
+  if (!papers.length) { showToast(`${name} is not in this prototype’s Program.`); return; }
+  $("#drawerContent").innerHTML = `
+    <div class="drawer-profile-head"><div class="avatar" style="--avatar:#314f44">${escapeHtml(name.split(" ").map(w => w[0]).join("").slice(0, 2))}</div><div><h2 id="drawerName">${escapeHtml(name)}</h2><p class="affiliation">Author in the CHI 2027 Program</p></div></div>
+    <div class="drawer-section"><span>IN THE PROGRAM</span><h3>${papers.length} ${papers.length === 1 ? "paper" : "papers"}</h3>
+      <ul class="author-papers">${papers.map(p => `<li><a href="${programHref(p.session.id)}"><b>${escapeHtml(p.title)}</b><small>${escapeHtml(sessionWhen(p.session))} · ${escapeHtml(p.session.title)} · ${escapeHtml(CHI.roomLabel(p.session.room))}</small></a></li>`).join("")}</ul></div>
+    <div class="drawer-section"><span>ABOUT THIS PROFILE</span><p>Only a few example people have full profiles in this prototype. Everyone else is listed by their papers.</p></div>`;
+  drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); backdrop.hidden = false;
+}
+(function openFromURL() {
+  const name = new URLSearchParams(location.search).get("person");
+  if (!name) return;
+  const clean = name.replace(/^(Dr\.|Prof\.)\s+/, "");
+  const person = people.find(p => p.author === clean || p.name === name || p.id === name);
+  if (state.view !== "people") setView("people", false);
+  person ? openDrawer(person) : openAuthor(clean);
+})();
+
+// Plan or saves changed on another page (or in Ask CHI): refresh the parts that depend on them.
+window.addEventListener("chi-store", () => {
+  people = peopleBase.map(hydratePerson);
+  state.saved = STORE.read("people") || {};
+  renderPeople(); renderRecommendations(); updateSavedCounts();
+  if (state.view === "content-detail" && state.activeContent) renderContentDetail(state.activeContent);
+});
+
+</script>
+  </body>
+</html>

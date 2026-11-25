@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Awards · CHI 2027</title>
+<link rel="icon" href="../shared/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../shared/site.css">
+<script src="../shared/awards-data.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body data-page="awards">
+<script src="../shared/shell.js"></script>
+<template id="dc-template">
+<helmet>
+<style>
+body{margin:0;background:#F4F3EF}
+#dc-root h1{font-size:clamp(40px,11vw,72px)!important}
+@media (max-width:600px){#dc-root section{padding-left:16px!important;padding-right:16px!important}#dc-root section:first-child{padding-top:32px!important}}
+a{color:#1C3A2E}a:hover{color:#0F1F19}
+button,input{font-family:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F44;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'DM Sans', system-ui, sans-serif; color: #171816; background: #F4F3EF; min-height: 100vh">
+
+<div style="display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 999 1 640px; min-width: 0">
+
+
+<section class="page-hero" aria-labelledby="awards-title" style="padding: 0 0 64px">
+<div class="awards-photo" style="position: relative; width: 100%; height: clamp(320px, 36vw, 480px); overflow: hidden; background: #0F1F19">
+<img src="https://images.unsplash.com/photo-1773828755374-0ee802d9f44b?w=2400&amp;q=80&amp;auto=format&amp;fit=crop" alt="" style="position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 55%">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,31,25,0.15) 0%, rgba(15,31,25,0.35) 45%, rgba(15,31,25,0.85) 100%)"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0">
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 24px 40px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 40px">
+<h1 id="awards-title" style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 72px; line-height: 0.95; letter-spacing: -0.045em; font-weight: 600; color: #FFFFFF">CHI 2027 Awards</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 28px; padding-bottom: 6px; font-size: 14px; color: rgba(255,255,255,0.8)">
+<span><b style="color: #D3FB63; font-weight: 600">62</b> Best Papers · top 1%</span>
+<span><b style="color: #D3FB63; font-weight: 600">213</b> Honorable Mentions · top 5%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="multi-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
+<h2 id="multi-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Sessions with Multiple Best Papers</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px">
+<sc-for list="{{multi}}" as="m" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{m.when}}</span>
+<span style="flex: none; padding: 3px 8px; background: #314F44; color: #FFFFFF; font-size: 12px; font-weight: 500">{{m.count}} Best Papers</span>
+</div>
+<h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{m.session}}</h3>
+<a href="{{m.mapHref}}" style="font-size: 13px; color: #1C3A2E; font-weight: 600">{{m.room}} · Map</a>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="list-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
+<h2 id="list-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Award Papers</h2>
+<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px">
+<div role="tablist" aria-label="Award type" style="display: flex; gap: 4px; padding: 4px; background: #ECEBE5">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="min-height: 44px; padding: 0 16px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{t.shadow}}">{{t.label}}</button>
+</sc-for>
+</div>
+<label style="flex: 1 1 260px; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 14px; border: 1px solid #C7C6BF; background: #FFFFFF">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666761" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search award papers</span>
+<input type="search" placeholder="Search titles, authors, sessions" value="{{query}}" onChange="{{onQuery}}" style="flex: 1; min-width: 0; border: none; outline: none; font-size: 15px; color: #171816; background: transparent">
+</label>
+<div role="group" aria-label="View" style="display: flex; gap: 4px; padding: 4px; background: #ECEBE5">
+<sc-for list="{{views}}" as="v" hint-placeholder-count="2">
+<button type="button" aria-pressed="{{v.pressed}}" onClick="{{v.pick}}" style="min-height: 44px; padding: 0 16px; border: none; background: {{v.bg}}; color: {{v.fg}}; font-size: 15px; font-weight: 500; cursor: pointer; box-shadow: {{v.shadow}}">{{v.label}}</button>
+</sc-for>
+</div>
+</div>
+<div role="group" aria-label="Filter by topic" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{topics}}" as="tp" hint-placeholder-count="11">
+<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid {{tp.border}}; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 13px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 500; color: {{tp.countColor}}">{{tp.count}}</span></button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{isHM}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border: 1px dashed #C7C6BF; padding: 40px 24px; text-align: center; color: #3A3B36; font-size: 15px; line-height: 1.55">Honorable Mention papers will be listed here.</div>
+</sc-if>
+
+<sc-if value="{{showDays}}" hint-placeholder-val="{{true}}">
+<div role="tablist" aria-label="Conference day" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px">
+<sc-for list="{{dayTabs}}" as="d" hint-placeholder-count="5">
+<button type="button" role="tab" aria-selected="{{d.selected}}" onClick="{{d.pick}}" style="flex: 1 1 150px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 18px; border: 1px solid {{d.border}}; background: {{d.bg}}; color: {{d.fg}}; cursor: pointer; text-align: left">
+<span style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{d.label}}</span>
+<span style="font-size: 13px; color: {{d.countColor}}">{{d.count}}</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{dayEmpty}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border: 1px dashed #C7C6BF; padding: 40px 24px; text-align: center; color: #3A3B36; font-size: 15px">No award papers match on this day. Try another day or topic.</div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 32px">
+<sc-for list="{{slots}}" as="s" hint-placeholder-count="2">
+<div>
+<div style="display: flex; align-items: baseline; gap: 12px; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #C7C6BF">
+<h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500; color: #1C3A2E">{{s.label}}</h3>
+<span style="font-size: 13px; color: #8A8B84">{{s.count}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px">
+<sc-for list="{{s.items}}" as="p" hint-placeholder-count="3">
+<article id="{{p.anchor}}" style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 80px">
+<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{p.topicLabel}}</span>
+<h4 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h4>
+<sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">{{p.sum}}</p>
+</sc-if>
+<div style="font-size: 13px; line-height: 1.5; color: #666761"><a href="{{p.mapHref}}" style="color: #1C3A2E; font-weight: 600">{{p.room}}</a> · {{p.session}}<br>{{p.authors}}</div>
+<div style="margin-top: auto; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-pressed="{{p.savedStr}}" onClick="{{p.toggle}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{p.btnBorder}}; background: {{p.btnBg}}; color: {{p.btnFg}}; font-size: 13px; font-weight: 600; cursor: pointer">{{p.btnLabel}}</button>
+<a href="{{p.doi}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 1px solid #C7C6BF; color: #3A3B36; font-size: 13px; font-weight: 600; text-decoration: none">Read on ACM
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg></a>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{showList}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{papers}}" as="p" hint-placeholder-count="8">
+<article style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start">
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500; color: #1C3A2E">{{p.dayLabel}}</span>
+<span style="font-size: 13px; color: #8A8B84">{{p.timeLabel}}</span>
+</div>
+<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{p.topicLabel}}</span>
+<h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h3>
+<sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">{{p.sum}}</p>
+</sc-if>
+<div style="font-size: 13px; line-height: 1.5; color: #666761"><a href="{{p.mapHref}}" style="color: #1C3A2E; font-weight: 600">{{p.room}}</a> · {{p.session}} · {{p.authors}}</div>
+</div>
+<div style="flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-pressed="{{p.savedStr}}" onClick="{{p.toggle}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{p.btnBorder}}; background: {{p.btnBg}}; color: {{p.btnFg}}; font-size: 13px; font-weight: 600; cursor: pointer">{{p.btnLabel}}</button>
+<a href="{{p.doi}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 1px solid #C7C6BF; color: #3A3B36; font-size: 13px; font-weight: 600; text-decoration: none">Read on ACM</a>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+</section>
+
+</div>
+</div>
+</div>
+</template>
+<div id="main" tabindex="-1"><div id="dc-root"></div></div>
+<script type="text/plain" data-dc-script data-props='{"$preview":{"width":1440,"height":3200}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // ?day=Wed opens that day (links from Map and My); the #paper-… anchor is scrolled to after render.
+    var day = new URLSearchParams(location.search).get('day');
+    this.state = { tab: 'bp', topics: {}, view: 'days', day: /^(Mon|Tue|Wed|Thu|Fri|TBA)$/.test(day || '') ? day : 'Mon', query: '' };
+    var self = this;
+    window.addEventListener('chi-store', function () { self.forceUpdate(); });
+  }
+  renderVals() {
+    var self = this;
+    // Shared with Map and My (shared/awards-data.js)
+    var TOPICS = CHI_AWARDS.topics;
+    var TL = {}; TOPICS.forEach(function (t) { TL[t[0]] = t[1]; });
+    var DAYS = CHI_AWARDS.days;
+    var DI = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, TBA: 5 };
+    var planned = window.CHIStore.read('awards');
+    var st = this.state;
+    var all = CHI_AWARDS.papers.map(function (r) {
+      var saved = planned.indexOf(r.id) >= 0;
+      return {
+        id: r.id, anchor: 'paper-' + r.id, title: r.title, topic: r.topic, topicLabel: TL[r.topic], day: r.day,
+        dayLabel: r.day === 'TBA' ? 'TBA' : r.dayLabel,
+        start: r.start || 'TBA', timeLabel: r.start ? r.start + '–' + r.end : 'Time to be announced',
+        room: r.roomLabel, mapHref: r.room ? '../map/?room=' + encodeURIComponent(r.room) : '../map/', session: r.session, authors: r.authors, doi: r.doi,
+        sum: r.summary, hasSum: r.summary !== '',
+        sortKey: DI[r.day] * 10000 + (r.start ? parseInt(r.start.replace(':', ''), 10) : 9999),
+        saved: saved, savedStr: saved ? 'true' : 'false',
+        btnLabel: saved ? '✓ In My plan' : '+ Add to My plan',
+        btnBg: saved ? '#314F44' : '#FFFFFF', btnFg: saved ? '#FFFFFF' : '#3A3B36', btnBorder: saved ? '#314F44' : '#C7C6BF',
+        toggle: function () { var on = window.CHIStore.toggle('awards', r.id); window.CHIShell.toast(on ? 'Added to My plan.' : 'Removed from My plan.'); self.forceUpdate(); }
+      };
+    });
+    var q = (st.query || '').toLowerCase();
+    var byQuery = all.filter(function (p) {
+      return !q || (p.title + ' ' + p.authors + ' ' + p.session).toLowerCase().indexOf(q) >= 0;
+    });
+    var tsel = st.topics || {};
+    var anyTopic = Object.keys(tsel).some(function (k) { return tsel[k]; });
+    var shown = byQuery.filter(function (p) { return !anyTopic || !!tsel[p.topic]; })
+      .sort(function (a, b) { return a.sortKey - b.sortKey; });
+
+    var topics = TOPICS.map(function (t) {
+      var on = t[0] === 'all' ? !anyTopic : !!tsel[t[0]];
+      var n = t[0] === 'all' ? byQuery.length : byQuery.filter(function (p) { return p.topic === t[0]; }).length;
+      return { label: t[1], count: n, pressed: on ? 'true' : 'false', bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3A3B36', border: on ? '#314F44' : '#D8D7D1', countColor: on ? 'rgba(255,255,255,0.6)' : '#8A8B84', pick: function () { if (t[0] === 'all') { self.setState({ topics: {} }); return; } var n = Object.assign({}, self.state.topics); n[t[0]] = !n[t[0]]; self.setState({ topics: n }); } };
+    });
+    function seg(id, cur, label, key) {
+      var on = id === cur;
+      return { label: label, selected: on ? 'true' : 'false', pressed: on ? 'true' : 'false', bg: on ? '#FFFFFF' : 'transparent', fg: on ? '#171816' : '#666761', shadow: on ? '0 1px 2px rgba(15,31,25,0.12)' : 'none', pick: function () { var o = {}; o[key] = id; self.setState(o); } };
+    }
+    var tabs = [seg('bp', st.tab, 'Best Papers · 62', 'tab'), seg('hm', st.tab, 'Honorable Mentions · 213', 'tab')];
+    var views = [seg('days', st.view, 'By day', 'view'), seg('list', st.view, 'List', 'view')];
+
+    var dayTabs = DAYS.map(function (d) {
+      var n = shown.filter(function (p) { return p.day === d[0]; }).length;
+      var on = st.day === d[0];
+      return { id: d[0], label: d[1], n: n, count: n + (n === 1 ? ' paper' : ' papers'), selected: on ? 'true' : 'false',
+        bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#171816', border: on ? '#314F44' : '#D8D7D1', countColor: on ? 'rgba(255,255,255,0.6)' : '#8A8B84',
+        pick: function () { self.setState({ day: d[0] }); } };
+    }).filter(function (d) { return d.id !== 'TBA' || d.n > 0 || st.day === 'TBA'; });
+
+    var dayPapers = shown.filter(function (p) { return p.day === st.day; });
+    var slotMap = {}, slotOrder = [];
+    dayPapers.forEach(function (p) {
+      if (!slotMap[p.timeLabel]) { slotMap[p.timeLabel] = []; slotOrder.push(p.timeLabel); }
+      slotMap[p.timeLabel].push(p);
+    });
+    var slots = slotOrder.map(function (k) {
+      var n = slotMap[k].length;
+      return { label: k, count: n + (n === 1 ? ' paper' : ' papers'), items: slotMap[k] };
+    });
+
+    var groups = {};
+    all.forEach(function (p) {
+      if (p.day === 'TBA') return;
+      var k = p.day + '|' + p.start + '|' + p.room;
+      groups[k] = groups[k] || { day: p.day, start: p.start, room: p.room, mapHref: p.mapHref, session: p.session, count: 0, key: p.sortKey };
+      groups[k].count++;
+    });
+    var multi = Object.keys(groups).map(function (k) { return groups[k]; })
+      .filter(function (g) { return g.count > 1; })
+      .sort(function (a, b) { return b.count - a.count || a.key - b.key; })
+      .slice(0, 6)
+      .map(function (g) { return { when: DAYS[DI[g.day]][1] + ' · ' + g.start, room: g.room, mapHref: g.mapHref, session: g.session, count: g.count }; });
+
+    var isHM = st.tab === 'hm';
+    var savedCount = all.filter(function (p) { return p.saved; }).length;
+    return {
+      tabs: tabs, views: views, topics: topics, multi: multi,
+      papers: shown, dayTabs: dayTabs, slots: slots, dayEmpty: dayPapers.length === 0,
+      isHM: isHM, showList: !isHM && st.view === 'list', showDays: !isHM && st.view === 'days',
+      query: st.query,
+      onQuery: function (e) { self.setState({ query: e.target.value }); },
+      savedNum: savedCount,
+      savedCount: savedCount === 1 ? '1 paper' : savedCount + ' papers'
+    };
+  }
+}
+</script>
+<script src="../shared/dc-lite.js"></script>
+<script>
+// Scroll to a paper linked from Map or My (e.g. ?day=Tue#paper-3772318.3790804) once it is rendered.
+(function () {
+  if (!location.hash) return;
+  var tries = 0, t = setInterval(function () {
+    var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (el || ++tries > 40) { clearInterval(t); if (el) { el.scrollIntoView({ block: 'center' }); el.style.boxShadow = '0 0 0 3px #314F44'; } }
+  }, 50);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+/* ==========================================================================
+   CHI 2027 merged site — shared tokens + sidebar shell
+   One palette for every page: warm paper, ink, deep green, lime (on dark only), rust.
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+  --ink: #171816;
+  --muted: #666761;
+  --paper: #f4f3ef;
+  --card: #fbfaf7;
+  --line: #d8d7d1;
+  --soft: #e9e8e2;
+  --accent: #314f44;        /* deep green: buttons, selected states, links */
+  --accent-strong: #1c3a2e;
+  --accent-soft: #dce6e0;
+  --deep: #0f1f19;          /* dark surfaces */
+  --deep-2: #1c3a2e;
+  --lime: #d3fb63;          /* highlight — only on dark surfaces */
+  --rust: #a54b25;          /* secondary emphasis, AA on paper */
+  --rust-soft: #f5e3d8;
+  --cream: #f3f1e8;
+  --serif: 'Manrope', 'DM Sans', sans-serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --shell-w: 248px;
+  --focus: #6c8f80;
+}
+
+.chi-side, .chi-side *, .chi-topbar, .chi-topbar *, .chi-skip, .chi-toast { box-sizing: border-box; }
+.chi-shell-body { margin: 0; padding-left: var(--shell-w); font-family: var(--sans); color: var(--ink); background: var(--paper); }
+.chi-shell-body *:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.chi-skip { position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 14px; border-radius: 6px; color: var(--deep); background: var(--lime); font: 700 14px/1 var(--sans); text-decoration: none; }
+.chi-skip:focus { top: 12px; }
+
+.chi-side {
+  position: fixed; inset: 0 auto 0 0; z-index: 90; width: var(--shell-w);
+  display: flex; flex-direction: column; gap: 4px; padding: 22px 14px 18px;
+  overflow-y: auto; color: var(--cream); background: var(--deep);
+  font-family: var(--sans);
+}
+.chi-brand { display: flex; align-items: center; gap: 12px; margin: 0 6px 22px; color: inherit; text-decoration: none; }
+.chi-brand-mark { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 10px; color: var(--deep); background: var(--lime); font: 800 13px/1 var(--serif); letter-spacing: -.03em; }
+.chi-brand b { display: block; font: 800 18px/1.1 var(--serif); letter-spacing: -.04em; }
+.chi-brand small { display: block; margin-top: 3px; color: #9bb0a8; font-size: 12px; }
+
+.chi-nav { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.chi-nav a {
+  position: relative; display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px;
+  border-radius: 8px; color: #c8d3ce; font-size: 14.5px; font-weight: 500; text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+.chi-nav a svg { width: 19px; height: 19px; flex: none; }
+.chi-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+.chi-nav a[aria-current="page"] { color: var(--deep); background: var(--lime); font-weight: 700; }
+.chi-nav .chi-badge { margin-left: auto; min-width: 22px; padding: 2px 7px; border-radius: 99px; color: var(--deep); background: var(--cream); font-size: 11.5px; font-weight: 700; text-align: center; }
+.chi-nav a[aria-current="page"] .chi-badge { color: var(--lime); background: var(--deep); }
+.chi-sep { height: 1px; margin: 12px 8px; background: rgba(255,255,255,.1); }
+.chi-label { margin: 4px 12px 6px; color: #7f948b; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+.chi-side-foot { margin-top: auto; padding: 14px 12px 0; color: #9bb0a8; font-size: 11.5px; line-height: 1.5; }
+.chi-side-foot b { display: block; margin-bottom: 4px; color: var(--lime); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
+.chi-side-foot p { margin: 0 0 10px; }
+
+.chi-topbar { display: none; }
+
+/* Mobile: the sidebar becomes a drawer behind a top bar */
+@media (max-width: 900px) {
+  .chi-shell-body { padding-left: 0; padding-top: 58px; }
+  .chi-topbar {
+    position: fixed; inset: 0 0 auto 0; z-index: 95; display: flex; align-items: center; gap: 12px; height: 58px; padding: 0 12px 0 16px;
+    color: var(--cream); background: var(--deep);
+  }
+  .chi-topbar .chi-brand { margin: 0; }
+  .chi-topbar .chi-brand-mark { width: 32px; height: 32px; font-size: 11px; }
+  .chi-topbar .chi-brand small { display: none; }
+  .chi-menu { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 99px; color: var(--cream); background: none; font: 600 14px/1 var(--sans); cursor: pointer; }
+  .chi-side { top: 58px; transform: translateX(-100%); transition: transform .25s ease; width: min(300px, 86vw); box-shadow: 20px 0 60px rgba(0,0,0,.25); }
+  .chi-side > .chi-brand { display: none; }
+  .chi-shell-body.chi-nav-open .chi-side { transform: none; }
+  .chi-scrim { position: fixed; inset: 58px 0 0 0; z-index: 89; background: rgba(15,31,25,.4); }
+}
+@media (prefers-reduced-motion: reduce) { .chi-side { transition: none; } }
+
+/* Shared small parts the static pages use */
+.chi-toast { position: fixed; left: 50%; bottom: 24px; z-index: 120; transform: translate(-50%, 20px); padding: 12px 18px; border-radius: 10px; color: var(--cream); background: var(--deep); font: 500 14px/1.3 var(--sans); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.chi-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ==========================================================================
+   Spec layer — design/VISUAL_SPEC.md
+   Small overrides that bring the four original page styles onto one spec.
+   Prefixed with body.chi-shell-body so they win over each page's own CSS.
+   ========================================================================== */
+:root { --r: 4px; --r-panel: 16px; --t-page: clamp(40px, 5vw, 56px); --t-section: 28px; }
+
+/* Page titles: one size and weight everywhere */
+body.chi-shell-body .program-intro h1,
+body.chi-shell-body .page-intro h1,
+body.chi-shell-body .page-title-block h1,
+body.chi-shell-body #page-title,
+body.chi-shell-body .my h1,
+body.chi-shell-body #dc-root h1 {
+  font: 600 var(--t-page)/1.02 var(--serif) !important;
+  letter-spacing: -.04em !important;
+}
+body.chi-shell-body .detail-hero h1 { font: 600 clamp(36px, 4.4vw, 48px)/1.05 var(--serif) !important; letter-spacing: -.035em !important; }
+body.chi-shell-body .program-intro { padding: 48px 0 36px; }
+
+/* Section headings */
+body.chi-shell-body #dc-root h2,
+body.chi-shell-body .sec-head h2,
+body.chi-shell-body .section-heading h2,
+body.chi-shell-body #directory-title {
+  font: 700 var(--t-section)/1.15 var(--serif) !important;
+  letter-spacing: -.03em !important;
+}
+
+/* Primary buttons → accent; secondary → outlined */
+body.chi-shell-body .primary-button,
+body.chi-shell-body .btn.primary,
+body.chi-shell-body #dc-root button[style*="background: #171816"],
+body.chi-shell-body #dc-root a[style*="background: #171816"] {
+  background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important; border-radius: var(--r) !important;
+}
+body.chi-shell-body .secondary-button { border-radius: var(--r); }
+
+/* Tags: one look */
+body.chi-shell-body .tag,
+body.chi-shell-body .card-extras .keyword-list button,
+body.chi-shell-body .detail-keywords button {
+  padding: 4px 8px !important; border: 0 !important; border-radius: var(--r) !important;
+  color: var(--accent) !important; background: var(--accent-soft) !important;
+  font: 600 12px/1.2 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important;
+}
+body.chi-shell-body .card-extras .keyword-list button.is-active { color: #fff !important; background: var(--accent) !important; }
+
+/* Radius: 4px for cards, panels and controls on the Map; 16px only for dark highlight panels */
+body.chi-shell-body .canvas,
+body.chi-shell-body .floorbar,
+body.chi-shell-body .layerbar,
+body.chi-shell-body .search,
+body.chi-shell-body .seg,
+body.chi-shell-body .seg button,
+body.chi-shell-body .quick,
+body.chi-shell-body .rest,
+body.chi-shell-body .btn,
+body.chi-shell-body .hit-row,
+body.chi-shell-body .fcol,
+body.chi-shell-body .results ul,
+body.chi-shell-body .ropts button,
+body.chi-shell-body .tripbox,
+body.chi-shell-body .lyr,
+body.chi-shell-body .rgrid button,
+body.chi-shell-body .lindex a { border-radius: var(--r) !important; }
+body.chi-shell-body .next,
+body.chi-shell-body .next-up { border-radius: var(--r-panel) !important; }
+body.chi-shell-body .canvas { box-shadow: none; }
+body.chi-shell-body .center h1 { font: 700 var(--t-section)/1.15 var(--serif); letter-spacing: -.03em; }
+body.chi-shell-body .center h1 span { font-family: var(--sans); font-size: 15px; letter-spacing: 0; }
+
+/* Links */
+body.chi-shell-body .my p a,
+body.chi-shell-body #dc-root p a,
+body.chi-shell-body .srcline a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Ask CHI: same fonts as the site; icon-only on phones so it covers less */
+body.chi-shell-body .chat-composer textarea { font-family: var(--sans); font-size: 14px; }
+@media (max-width: 640px) {
+  body.chi-shell-body .chat-launcher:not(.is-open) > span:last-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  body.chi-shell-body .chat-launcher:not(.is-open) { min-width: 0; padding: 0 8px; }
+}
+
+
+/* Page header per spec: title + lede on one row, summary cards below (no empty column) */
+body.chi-shell-body .page-lede { margin: 12px 0 0; max-width: 640px; color: var(--muted); font-size: 16px; line-height: 1.5; }
+
+/* Standard page hero (same layout as Recommendations): eyebrow, title + copy on the left, one summary card on the right */
+body.chi-shell-body .std-hero { max-width: 1120px; margin: 0 auto; padding: 56px 24px 56px; box-sizing: content-box; }
+body.chi-shell-body .std-eyebrow { color: var(--accent-strong); font: 800 11px/1.4 var(--sans); letter-spacing: .13em; text-transform: uppercase; }
+body.chi-shell-body .std-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: start; }
+body.chi-shell-body .std-hero h1 { max-width: 690px; margin: 0; }
+body.chi-shell-body .std-hero-copy { max-width: 760px; margin: 22px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+body.chi-shell-body .std-hero-card { padding: 22px; border-left: 4px solid var(--accent); background: #fff; box-shadow: 0 6px 24px rgba(15, 31, 25, .06); }
+body.chi-shell-body .std-hero-card span { display: block; color: var(--muted); font: 800 11px/1.4 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+body.chi-shell-body .std-hero-card strong { display: block; margin: 7px 0 14px; color: var(--ink); font: 700 17px/1.3 var(--sans); }
+body.chi-shell-body .std-hero-card p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+body.chi-shell-body .std-hero-card a { color: var(--accent-strong); font-size: 13px; font-weight: 750; text-decoration: none; }
+body.chi-shell-body .std-hero-card a:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 900px) { body.chi-shell-body .std-hero-grid { grid-template-columns: 1fr; gap: 26px; } body.chi-shell-body .std-hero { padding: 32px 16px 28px; } }
